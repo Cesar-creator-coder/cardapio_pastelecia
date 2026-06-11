@@ -1,17 +1,1 @@
-{
-  "name": "Pastel & Cia",
-  "short_name": "Pastel&Cia",
-  "description": "O melhor pastel e lanche de Assis",
-  "start_url": "index.html",
-  "display": "standalone",
-  "background_color": "#f8a40e",
-  "theme_color": "#d62828",
-  "icons": [
-    {
-      "src": "https://share.zapia.com/x1sd2mqdreb7v48rtlgy2s",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
-  ]
-}
+
