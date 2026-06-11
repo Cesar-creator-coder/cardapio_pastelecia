@@ -1,50 +1,23 @@
-<!doctype html>
-<html lang="pt-BR">
+<!DOCTYPE html>
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Pastel & Cia - Oficial</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        :root { --p: #f8a40e; --s: #d62828; --d: #000000; }
-        body { background: #f3f4f6; margin: 0; font-family: sans-serif; }
-        .login-screen { position: fixed; inset: 0; background: linear-gradient(135deg, var(--p), var(--s)); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        .card { background: white; padding: 30px; border-radius: 30px; width: 100%; max-width: 350px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
-        .btn { background: var(--s); color: white; border: none; padding: 15px; border-radius: 50px; width: 100%; font-weight: 900; font-size: 1.2rem; cursor: pointer; margin-top: 20px; }
-    </style>
+    <title>TESTE PASTEL</title>
 </head>
-<body>
-
-    <div id="login-screen" class="login-screen">
-        <div class="card">
-            <div style="font-size: 5rem;">🥟</div>
-            <h1 style="font-weight: 900; color: var(--s); font-size: 2.2rem; margin: 10px 0;">Pastel & Cia</h1>
-            <p style="color: #666; margin-bottom: 20px;">Digite seu WhatsApp para entrar</p>
-            <input type="tel" id="user-phone" style="width: 100%; padding: 15px; border: 2px solid var(--p); border-radius: 15px; text-align: center; font-size: 1.2rem; font-weight: bold;" placeholder="(18) 99999-9999">
-            <button onclick="entrar()" class="btn">🚀 ENTRAR AGORA</button>
-        </div>
-    </div>
-
-    <div id="app-content" style="display:none; padding: 20px; text-align: center;">
-        <h1 style="color: var(--s); font-weight: 900; font-size: 2rem;">🥟 Pastel & Cia</h1>
-        <p>Carregando cardápio...</p>
-        <div style="background: var(--d); color: white; padding: 20px; border-radius: 20px; margin-top: 20px;">
-            <p>O seu sistema está sendo ativado.</p>
-        </div>
+<body style="background: orange; text-align: center; padding-top: 50px; font-family: sans-serif;">
+    <h1>🥟 PASTEL & CIA</h1>
+    <p>Se você está vendo isso, o código salvou certo!</p>
+    
+    <div style="background: white; padding: 20px; border-radius: 20px; display: inline-block;">
+        <input type="tel" id="tel" placeholder="Seu número" style="padding: 10px;">
+        <br><br>
+        <button onclick="alert('BOTAO FUNCIONOU!'); document.body.style.background='green';" style="padding: 15px 30px; background: red; color: white; font-weight: bold; border-radius: 10px; border: none; cursor: pointer;">
+            CLIQUE AQUI PARA TESTAR
+        </button>
     </div>
 
     <script>
-        function entrar() {
-            const tel = document.getElementById('user-phone').value;
-            if(tel.length >= 8) {
-                // Remove a tela de login na hora!
-                document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('app-content').style.display = 'block';
-                alert("Bem-vindo! Agora o site vai funcionar.");
-            } else {
-                alert("Digite seu número primeiro!");
-            }
-        }
+        console.log("Sistema de teste carregado!");
     </script>
 </body>
 </html>
