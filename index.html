@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Pastel & Cia - Cardápio Digital</title>
+  <meta name="theme-color" content="#d62828">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+  <style>
+    :root {
+      --primary: #d62828;
+      --secondary: #f8a40e;
+      --accent: #003049;
+      --bg: #f8f9fa;
+      --text: #1a1a1a;
+      --white: #ffffff;
+      --shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body { font-family: 'Poppins', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+    /* Login Screen */
+    .login-screen {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      display: flex; align-items: center; justify-content: center; z-index: 9999;
+    }
+    .login-box {
+      background: var(--white); padding: 2.5rem; border-radius: 20px;
+      width: 90%; max-width: 400px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    }
+    .login-logo { font-size: 4rem; margin-bottom: 1rem; }
+    .login-box h1 { color: var(--primary); margin-bottom: 0.5rem; font-size: 1.8rem; }
+    .login-input {
+      width: 100%; padding: 1rem; border: 2px solid var(--secondary);
+      border-radius: 15px; font-size: 1.1rem; margin-bottom: 1rem; text-align: center; outline: none;
+    }
+    .login-button {
+      background: linear-gradient(135deg, var(--primary), #b91c1c);
+      color: white; border: none; padding: 1.2rem; border-radius: 25px;
+      width: 100%; font-weight: bold; cursor: pointer; font-size: 1.1rem;
+    }
+    .admin-password-field { display: none; margin-top: 0.5rem; }
+
+    /* Main Layout */
+    header {
+      background: var(--primary); color: white; padding: 1rem;
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      box-shadow: var(--shadow); display: none;
+    }
+    .header-content { display: flex; justify-content: space-between; align-items: center; max-width: 800px; margin: 0 auto; }
+    .logo-text { font-size: 1.4rem; font-weight: 800; }
+    
+    .nav-menu {
+      background: white; position: fixed; top: 60px; width: 100%; z-index: 90;
+      overflow-x: auto; white-space: nowrap; padding: 0.8rem; border-bottom: 1px solid #ddd;
+      display: none; scrollbar-width: none;
+    }
+    .nav-menu::-webkit-scrollbar { display: none; }
+    .nav-menu a {
+      display: inline-block; padding: 0.5rem 1.2rem; margin-right: 0.5rem;
+      background: #f1f1f1; border-radius: 20px; color: #666;
+      text-decoration: none; font-weight: 600; font-size: 0.9rem;
+      transition: all 0.3s;
+    }
+    .nav-menu a.active { background: var(--primary); color: white; }
+
+    main { padding: 120px 1rem 100px; max-width: 800px; margin: 0 auto; display: none; }
+
+    /* Category & Products */
+    .category { margin-bottom: 2rem; }
+    .category-title {
+      font-size: 1.3rem; margin-bottom: 1rem; padding-left: 0.5rem;
+      border-left: 5px solid var(--primary); color: var(--accent);
+    }
+    .products-grid { display: grid; gap: 1rem; }
+    .product-card {
+      background: white; border-radius: 15px; padding: 1rem;
+      display: grid; grid-template-columns: 80px 1fr auto; gap: 1rem;
+      box-shadow: var(--shadow); position: relative;
+    }
+    .product-image {
+      width: 80px; height: 80px; background: #eee; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center; font-size: 2.5rem;
+      object-fit: cover;
+    }
+    .product-info h3 { font-size: 1.1rem; color: var(--accent); margin-bottom: 0.2rem; }
+    .product-info p { font-size: 0.85rem; color: #666; line-height: 1.3; }
+    .product-price { font-weight: 700; color: var(--primary); font-size: 1.1rem; align-self: center; }
+    .add-btn {
+      grid-column: 1 / -1; background: var(--secondary); color: white;
+      border: none; padding: 0.6rem; border-radius: 10px; font-weight: 700;
+      cursor: pointer; margin-top: 0.5rem;
+    }
+
+    /* Cart Floating Button */
+    .cart-float {
+      position: fixed; bottom: 2rem; right: 1.5rem;
+      background: var(--primary); color: white; width: 65px; height: 65px;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 5px 20px rgba(214, 40, 40, 0.4); z-index: 1000;
+      cursor: pointer; display: none;
+    }
+    .cart-count {
+      position: absolute; top: -5px; right: -5px; background: var(--accent);
+      color: white; font-size: 0.8rem; padding: 0.3rem 0.6rem; border-radius: 10px;
+    }
+
+    /* Modals */
+    .modal {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5); z-index: 2000; display: none;
+      align-items: flex-end;
+    }
+    .modal-content {
+      background: white; width: 100%; border-radius: 25px 25px 0 0;
+      padding: 2rem; max-height: 90vh; overflow-y: auto;
+    }
+    
+    /* Footer Info */
+    .footer-info {
+      text-align: center; padding: 2rem; color: #666; font-size: 0.9rem;
+      border-top: 1px solid #eee; margin-top: 2rem;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%);
+      background: #333; color: white; padding: 0.8rem 1.5rem;
+      border-radius: 30px; font-size: 0.9rem; z-index: 3000; display: none;
+    }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
+</head>
+<body>
+
+  <!-- Login Screen -->
+  <div class="login-screen" id="login-screen">
+    <div class="login-box">
+      <div class="login-logo">🥟</div>
+      <h1>Pastel & Cia</h1>
+      <p style="color: #666; margin-bottom: 1.5rem;">Informe seu WhatsApp para entrar</p>
+      <input type="tel" id="login-phone" class="login-input" placeholder="(18) 99999-9999" maxlength="15" oninput="formatPhone(this); checkAdmin()">
+      <div id="admin-field" class="admin-password-field">
+        <input type="password" id="admin-pass" class="login-input" placeholder="Senha Administrativa">
+      </div>
+      <button class="login-button" onclick="handleLogin()">🚀 Entrar no Cardápio</button>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header id="app-header">
+    <div class="header-content">
+      <span class="logo-text">Pastel & Cia 🥟</span>
+      <div onclick="location.reload()" style="cursor:pointer;">🔄</div>
+    </div>
+  </header>
+
+  <!-- Nav Category -->
+  <nav class="nav-menu" id="nav-menu"></nav>
+
+  <!-- Main Content -->
+  <main id="app-main">
+    <div id="categories-container"></div>
+    <div class="footer-info">
+      <p>📍 Av. Rui Barbosa, 10 – Centro – Assis/SP</p>
+      <p>⏰ Terça a Domingo: 19:00h às 05:00h</p>
+    </div>
+  </main>
+
+  <!-- Cart Button -->
+  <div class="cart-float" id="cart-float" onclick="openCart()">
+    <i class="fa-solid fa-cart-shopping"></i>
+    <span class="cart-count" id="cart-count">0</span>
+  </div>
+
+  <!-- Cart Modal -->
+  <div class="modal" id="cart-modal">
+    <div class="modal-content">
+      <h2 style="margin-bottom: 1.5rem; display: flex; justify-content: space-between;">
+        Seu Pedido <span onclick="closeModal('cart-modal')" style="cursor:pointer;">×</span>
+      </h2>
+      <div id="cart-items"></div>
+      <div id="cart-total-box" style="margin-top: 1.5rem; border-top: 2px dashed #eee; padding-top: 1rem;">
+        <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 1.2rem;">
+          <span>Total:</span> <span id="cart-total-value">R$ 0,00</span>
+        </div>
+      </div>
+      <button class="login-button" style="margin-top: 1.5rem;" onclick="finalizarPedido()">✅ Finalizar pelo WhatsApp</button>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    // Configuration
+    const ADMIN_PHONE = "18998165086";
+    const ADMIN_PASSWORD = "Concha@2005";
+    const firebaseConfig = {
+      apiKey: "AIzaSyADN92qu2aZnhfG1MnUm5NqZHrKah8EL8Q",
+      authDomain: "pastel-e-cia-1710c.firebaseapp.com",
+      projectId: "pastel-e-cia-1710c",
+      storageBucket: "pastel-e-cia-1710c.appspot.com",
+      messagingSenderId: "542365287714",
+      appId: "1:542365287714:web:0f413d7890a887469a4732"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    let products = [];
+    let cart = [];
+    let currentUser = null;
+    let isAdmin = false;
+
+    const categories = {
+      "pastel-tradicional": "Pastéis Tradicionais",
+      "pastel-especial": "Pastéis Especiais",
+      "pastel-doce": "Pastéis Doces",
+      "lanches": "Lanches no Pão",
+      "bebidas": "Bebidas"
+    };
+
+    const sampleProducts = [
+      { id: "1", name: "Pastel de Carne", description: "Carne moída temperada", price: 12.00, category: "pastel-tradicional", image: "🥟", active: true, order: 1 },
+      { id: "2", name: "Pastel de Queijo", description: "Muçarela de primeira", price: 12.00, category: "pastel-tradicional", image: "🧀", active: true, order: 2 },
+      { id: "3", name: "X-Tudo Especial", description: "Hambúrguer, Ovo, Bacon, Salada", price: 25.00, category: "lanches", image: "🍔", active: true, order: 3 },
+      { id: "4", name: "Coca-Cola 2L", description: "Geladinha", price: 15.00, category: "bebidas", image: "🥤", active: true, order: 4 }
+    ];
+
+    function formatPhone(input) {
+      let v = input.value.replace(/\D/g, '');
+      if (v.length > 11) v = v.slice(0, 11);
+      if (v.length > 2) v = '(' + v.substring(0, 2) + ') ' + v.substring(2);
+      if (v.length > 9) v = v.substring(0, 10) + '-' + v.substring(10);
+      input.value = v;
+    }
+
+    function checkAdmin() {
+      const phone = document.getElementById('login-phone').value.replace(/\D/g, '');
+      document.getElementById('admin-field').style.display = (phone === ADMIN_PHONE) ? 'block' : 'none';
+    }
+
+    function handleLogin() {
+      const phone = document.getElementById('login-phone').value.replace(/\D/g, '');
+      if (phone.length < 10) return showToast("Digite um telefone válido");
+      
+      if (phone === ADMIN_PHONE) {
+        const pass = document.getElementById('admin-pass').value;
+        if (pass !== ADMIN_PASSWORD) return showToast("Senha incorreta");
+        isAdmin = true;
+      }
+
+      currentUser = phone;
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('app-header').style.display = 'block';
+      document.getElementById('nav-menu').style.display = 'block';
+      document.getElementById('app-main').style.display = 'block';
+      document.getElementById('cart-float').style.display = 'flex';
+      
+      loadProducts();
+    }
+
+    function loadProducts() {
+      db.collection('products').orderBy('order', 'asc').onSnapshot(snap => {
+        let remote = snap.docs.map(doc => ({id: doc.id, ...doc.data()}));
+        products = remote.length > 0 ? remote : sampleProducts;
+        renderMenu();
+      });
+    }
+
+    function renderMenu() {
+      const container = document.getElementById('categories-container');
+      const nav = document.getElementById('nav-menu');
+      container.innerHTML = '';
+      nav.innerHTML = '';
+
+      Object.entries(categories).forEach(([id, name]) => {
+        const catProducts = products.filter(p => p.category === id && p.active);
+        if (catProducts.length === 0) return;
+
+        nav.innerHTML += `<a href="#${id}">${name.split(' ')[0]}</a>`;
+        
+        let html = `<section class="category" id="${id}"><h2 class="category-title">${name}</h2><div class="products-grid">`;
+        catProducts.forEach(p => {
+          const imgHtml = p.image.length > 5 ? `<img src="${p.image}" style="width:100%;height:100%;object-fit:cover;border-radius:10px;">` : p.image;
+          html += `
+            <div class="product-card">
+              <div class="product-image">${imgHtml}</div>
+              <div class="product-info">
+                <h3>${p.name}</h3>
+                <p>${p.description}</p>
+              </div>
+              <div class="product-price">R$ ${parseFloat(p.price).toFixed(2)}</div>
+              <button class="add-btn" onclick="addToCart('${p.id}')">🛒 Adicionar</button>
+            </div>
+          `;
+        });
+        html += `</div></section>`;
+        container.innerHTML += html;
+      });
+    }
+
+    function addToCart(id) {
+      const product = products.find(p => String(p.id) === String(id));
+      const inCart = cart.find(i => String(i.id) === String(id));
+      if (inCart) inCart.qty++;
+      else cart.push({...product, qty: 1});
+      
+      updateCart();
+      showToast(`${product.name} adicionado!`);
+    }
+
+    function updateCart() {
+      const count = cart.reduce((acc, i) => acc + i.qty, 0);
+      document.getElementById('cart-count').innerText = count;
+      localStorage.setItem('pastel_cia_cart', JSON.stringify(cart));
+    }
+
+    function openCart() {
+      const container = document.getElementById('cart-items');
+      container.innerHTML = cart.length ? '' : '<p style="text-align:center;padding:2rem;">Carrinho vazio 😔</p>';
+      
+      let total = 0;
+      cart.forEach(item => {
+        total += item.price * item.qty;
+        container.innerHTML += `
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; background:#f9f9f9; padding:0.8rem; border-radius:10px;">
+            <div style="flex:1;">
+              <div style="font-weight:600;">${item.name}</div>
+              <div style="font-size:0.8rem;color:#666;">R$ ${item.price.toFixed(2)} x ${item.qty}</div>
+            </div>
+            <div style="display:flex; align-items:center; gap:0.5rem;">
+              <button onclick="changeQty('${item.id}', -1)" style="width:32px;height:32px;border-radius:50%;border:none;background:#ddd;font-weight:bold;">-</button>
+              <span style="min-width:20px;text-align:center;">${item.qty}</span>
+              <button onclick="changeQty('${item.id}', 1)" style="width:32px;height:32px;border-radius:50%;border:none;background:#ddd;font-weight:bold;">+</button>
+            </div>
+          </div>
+        `;
+      });
+
+      document.getElementById('cart-total-value').innerText = `R$ ${total.toFixed(2)}`;
+      document.getElementById('cart-modal').style.display = 'flex';
+    }
+
+    function changeQty(id, delta) {
+      const item = cart.find(i => String(i.id) === String(id));
+      if(!item) return;
+      item.qty += delta;
+      if (item.qty <= 0) cart = cart.filter(i => String(i.id) !== String(id));
+      updateCart();
+      openCart();
+    }
+
+    function finalizarPedido() {
+      if (!cart.length) return;
+      let msg = `*Novo Pedido - Pastel & Cia* 🥟\n\n`;
+      let total = 0;
+      cart.forEach(i => {
+        msg += `• ${i.qty}x ${i.name} - R$ ${(i.price * i.qty).toFixed(2)}\n`;
+        total += i.price * i.qty;
+      });
+      msg += `\n*Total: R$ ${total.toFixed(2)}*\n`;
+      msg += `\n📍 Endereço: [CLIENTE DIGITE AQUI]`;
+      
+      const whatsappUrl = `https://wa.me/5518998165086?text=${encodeURIComponent(msg)}`;
+      window.open(whatsappUrl, '_blank');
+      cart = [];
+      updateCart();
+      closeModal('cart-modal');
+    }
+
+    function showToast(text) {
+      const t = document.getElementById('toast');
+      t.innerText = text;
+      t.style.display = 'block';
+      setTimeout(() => t.style.display = 'none', 2500);
+    }
+
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+    window.onload = () => {
+      const saved = localStorage.getItem('pastel_cia_cart');
+      if (saved) { cart = JSON.parse(saved); updateCart(); }
+    };
+  </script>
+</body>
+</html>
