@@ -1,0 +1,17 @@
+{
+  "name": "Pastel & Cia - Cardápio Digital",
+  "short_name": "Pastel&Cia",
+  "description": "Peça o melhor pastel e lanche de Assis direto pelo app.",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#f8a40e",
+  "icons": [
+    {
+      "src": "https://base44.app/api/apps/6a03ab69cde9d9bfc714c474/files/mp/public/6a03ab69cde9d9bfc714c474/6562f4047_1001076724.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
