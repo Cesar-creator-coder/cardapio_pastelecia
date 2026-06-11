@@ -3,7 +3,7 @@
  <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title id="page-title">Pastel & Cia - Cardápio Digital</title>
+  <title id="page-title">Concha Lanches - Cardápio Digital</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
         body {
@@ -554,7 +554,7 @@
         }
 
         /* Checkout Form */
-        .checkout-form { padding-bottom: 120px;
+        .checkout-form {
             display: none;
             animation: fadeIn 0.3s ease-in-out;
         }
@@ -815,27 +815,7 @@
     </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
- 
-    <!-- PWA Setup -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#f8a40e">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Pastel & Cia">
-    <link rel="apple-touch-icon" href="https://base44.app/api/apps/6a03ab69cde9d9bfc714c474/files/mp/public/6a03ab69cde9d9bfc714c474/6562f4047_1001076724.png">
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js').then(reg => {
-                    console.log('Service Worker registrado!', reg);
-                }).catch(err => {
-                    console.log('Erro ao registrar SW:', err);
-                });
-            });
-        }
-    </script>
-    
-</head>
+ </head>
  <body><div class="login-screen" id="login-screen">
    <div class="login-box">
     <div class="login-logo">
@@ -873,7 +853,7 @@
            <div class="burger-bun-bottom"></div>
           </div>
       </div>
-      <span id="restaurant-title-text">Pastel & Cia</span>
+      <span id="restaurant-title-text">Concha Lanches</span>
      </div>
      <div class="user-badge" id="user-badge" onclick="showUserMenu()" title="Clique para ver suas informações"><span>👤</span> <span id="user-name-display">Cliente</span>
      </div>
@@ -893,7 +873,7 @@
    </div>
 
    <section class="banner" id="hero-banner-bg">
-    <h1 id="banner-welcome-title">Bem-vindo à Pastel & Cia!</h1>
+    <h1 id="banner-welcome-title">Bem-vindo à Concha Lanches!</h1>
     <p id="banner-subtitle-text">Os melhores lanches de Assis desde 2005</p>
     <p><strong>🍔 Pedido mínimo: R$ <span id="banner-min-order">15,00</span></strong></p>
     <div style="margin-top: 1rem; padding: 1.5rem; background: #000000; color: white; border-radius: 10px; font-size: 0.9rem;">
@@ -903,13 +883,13 @@
      <div id="banner-hours-display" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.75rem; text-align: left; margin-bottom: 1.5rem;">
       <div><strong>Qua–Sex:</strong> 18:45–22:00</div>
       <div><strong>Sáb–Dom:</strong> 18:30–22:00</div>
-      <div><strong>Segunda:</strong> Fechado ❌</div>
+      <div><strong>Seg–Ter:</strong> Fechado ❌</div>
      </div>
      <div id="banner-address-text" style="padding-top: 1rem; border-top: 2px solid rgba(255,255,255,0.2); text-align: center; font-weight: bold;">
        📍 R. Humberto de Campos, 25 - Centro - Assis/SP
      </div>
     </div>
-    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1.5rem;"><a href="https://www.google.com/maps/dir/?api=1&destination=Av.+Rui+Barbosa,+10+-+Centro,+Assis+-+SP" id="google-maps-banner-btn" target="_blank" rel="noopener noreferrer" class="banner-button" style="text-decoration: none;"> 📍 Ver no Google Maps </a>
+    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1.5rem;"><a href="https://maps.google.com" id="google-maps-banner-btn" target="_blank" rel="noopener noreferrer" class="banner-button" style="text-decoration: none;"> 📍 Ver no Google Maps </a>
     </div>
    </section><section class="promo-banner" id="promo-banner-bg">
     <div class="promo-content">
@@ -1036,16 +1016,9 @@
   <div class="bottom-nav" id="bottom-nav"><button onclick="goHome()" id="btnHome" class="active"> <span>🏠</span> Início </button> <button onclick="openSearch()" id="btnSearch"> <span>🔍</span> Buscar </button> <button onclick="openCartNav()" id="btnCart"> <span>🛒</span> Carrinho <span class="cart-count" id="cart-count">0</span> </button> <button onclick="openOrders()" id="btnOrders"> <span>📄</span> Pedidos </button> <button onclick="openProfile()" id="btnProfile"> <span>👤</span> Perfil </button>
   </div>
   
-  
-    <div style="text-align: center; margin-top: 2rem; padding-bottom: 2rem;">
-        <button onclick="shareCardapio()" style="background: #25d366; color: white; border: none; padding: 12px 25px; border-radius: 50px; font-weight: bold; font-size: 1rem; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);">
-            <i class="fa-brands fa-whatsapp"></i> Compartilhar Cardápio
-        </button>
-    </div>
-    
-<footer class="footer">
+  <footer class="footer">
    <div class="footer-info">
-    <p id="footer-copyright-text">© Pastel & Cia - Desde 2005 | Os melhores lanches de Assis 🍔</p>
+    <p id="footer-copyright-text">© Concha Lanches - Desde 2005 | Os melhores lanches de Assis 🍔</p>
    </div>
   </footer>
 
@@ -1057,11 +1030,11 @@
             pix_key: "18998165086",
             pix_type: "Celular",
             whatsapp_number: "5518998165086",
-            address: "Av. Rui Barbosa, 10 – Centro – Assis/SP • CEP 19802-090",
+            address: "Rua Humberto de Campos, 25 – Centro – Assis/SP • CEP 19802-090",
             hours: "Qua–Sex: 18:45–22:00 • Sáb–Dom: 18:30–22:00 • Seg/Ter: Fechado",
             primary_color: "#f8a40e",
             min_order: "15.00",
-            welcome_title: "Bem-vindo à Pastel & Cia!",
+            welcome_title: "Bem-vindo à Concha Lanches!",
             welcome_subtitle: "Os melhores lanches de Assis desde 2005",
             restaurant_logo_url: "",
             banner_img_1: "",
@@ -1079,7 +1052,6 @@
         const ADMIN_PASSWORD = "Concha@2005";
 
         // Global state
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
         let currentUserPhone = '';
         let currentUserName = '';
         let userOrders = [];
@@ -1170,11 +1142,6 @@
             if (localStorage.getItem('all_orders')) {
                 allOrders = JSON.parse(localStorage.getItem('all_orders'));
             }
-            
-            // Carregar carrinho salvo
-            if (localStorage.getItem('cart')) {
-                cart = JSON.parse(localStorage.getItem('cart'));
-            }
 
             // Checagem de QR Code na URL (?mesa=XX)
             detectarMesaDoQrCode();
@@ -1187,10 +1154,6 @@
             const mesaUrl = params.get('mesa');
             if (mesaUrl && mesaUrl.trim() !== "") {
                 numeroMesaDetectada = mesaUrl.trim();
-                
-                // Preencher campo de mesa se existir no checkout
-                const tableField = document.getElementById('customer-table-number');
-                if(tableField) tableField.value = numeroMesaDetectada;
                 
                 // Exibir aviso vermelho de mesa fixada no topo
                 const alertBox = document.getElementById('mesa-alert-salao');
@@ -1866,52 +1829,13 @@
             applyConfigTheme();
         }
 
-        
-        function shareCardapio() {
-            const text = "Olha que delícia o cardápio da Pastel & Cia! 🥟🍔 Peça agora: " + window.location.href;
-            const url = "https://api.whatsapp.com/send?text=" + encodeURIComponent(text);
-            window.open(url, '_blank');
-        }
-    
         // Cart functions
         function addToCart(productId) {
-            console.log("Adicionando:", productId);
-            let product = products.find(p => String(p.id) === String(productId));
-            if(!product) product = promosList.find(p => String(p.id) === String(productId));
+            let product = products.find(p => p.id === productId);
+            if(!product) product = promosList.find(p => p.id === productId);
             if (!product) return;
 
-            let button = null;
-            if (typeof event !== 'undefined') {
-                button = (event.currentTarget || event.target).closest('button') || event.target;
-            }
-
-            if(button && button.tagName === 'BUTTON') {
-                const originalText = button.innerHTML;
-                button.innerHTML = '✅ Adicionado!';
-                button.style.background = 'linear-gradient(135deg, #22c55e, #16a34a)';
-                button.disabled = true;
-                setTimeout(() => {
-                    button.innerHTML = originalText;
-                    button.style.background = '';
-                    button.disabled = false;
-                }, 800);
-            }
-
-            const existingItem = cart.find(item => String(item.id) === String(productId));
-            if (existingItem) {
-                existingItem.quantity += 1;
-            } else {
-                cart.push({
-                    id: productId,
-                    name: product.name,
-                    price: parseFloat(product.price),
-                    quantity: 1
-                });
-            }
-            saveCart();
-            updateCartDisplay();
-            if(typeof showToast === 'function') showToast(`${product.name} adicionado!`, 'success');
-        }
+            const button = event.target;
             const originalText = button.textContent;
             if(button && button.tagName === 'BUTTON') {
                 button.textContent = '✅ Adicionado!';
