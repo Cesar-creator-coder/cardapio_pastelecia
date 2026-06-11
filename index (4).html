@@ -1,0 +1,2506 @@
+<!doctype html>
+<html lang="pt-BR">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="page-title">Concha Lanches - Cardápio Digital</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+        body {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0 0 80px 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #ffffff;
+            color: #000000;
+            line-height: 1.6;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #f8a40e;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .header-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #000000;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-burger {
+            width: 40px;
+            height: 40px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+
+        .logo-burger:hover {
+            transform: translateY(-2px) scale(1.05);
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
+        }
+
+        .burger-bun-top {
+            width: 35px;
+            height: 12px;
+            background: linear-gradient(135deg, #e6b885, #d4a574);
+            border-radius: 20px 20px 8px 8px;
+            position: relative;
+            margin-bottom: 2px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+            border: 1px solid rgba(196, 150, 96, 0.8);
+        }
+
+        .burger-lettuce {
+            width: 32px;
+            height: 5px;
+            background: linear-gradient(135deg, #4ade80, #22c55e);
+            border-radius: 3px;
+            margin-bottom: 1px;
+            position: relative;
+        }
+
+        .burger-meat {
+            width: 30px;
+            height: 7px;
+            background: linear-gradient(135deg, #a0522d, #8b4513);
+            border-radius: 4px;
+            margin-bottom: 1px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.35);
+            position: relative;
+        }
+
+        .burger-cheese {
+            width: 28px;
+            height: 4px;
+            background: linear-gradient(135deg, #fcd34d, #fbbf24);
+            border-radius: 2px;
+            margin-bottom: 1px;
+            position: relative;
+        }
+
+        .burger-bun-bottom {
+            width: 35px;
+            height: 11px;
+            background: linear-gradient(135deg, #e6b885, #d4a574);
+            border-radius: 8px 8px 20px 20px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+            border: 1px solid rgba(196, 150, 96, 0.8);
+            position: relative;
+        }
+
+        .user-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .user-badge.admin-badge {
+            background: linear-gradient(135deg, #d62828, #b91c1c);
+            color: white;
+            box-shadow: 0 2px 10px rgba(214, 40, 40, 0.3);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding: 0.5rem 0;
+        }
+
+        .nav-menu::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-menu a {
+            color: #ffffff;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            font-size: 0.9rem;
+            font-weight: 500;
+            background: #000000;
+            border: 2px solid rgba(248, 164, 14, 0.3);
+        }
+
+        .nav-menu a.active {
+            background: #f8a40e;
+            color: #000000;
+            border-color: #f8a40e;
+            font-weight: 600;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: 50%;
+            transform: translateX(50%);
+            background: #d62828;
+            color: white;
+            border-radius: 50%;
+            min-width: 22px;
+            height: 22px;
+            padding: 0 5px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: bold;
+            border: 2px solid #000000;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 120px;
+            padding: 1rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Banner */
+        .banner {
+            background: linear-gradient(135deg, #f8a40e, #d62828);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .banner h1 {
+            font-size: 1.8rem;
+            margin: 0 0 0.75rem 0;
+        }
+
+        .banner-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+        }
+
+        .banner-button {
+            background: linear-gradient(135deg, white, #f8f9fa);
+            color: #d62828;
+            border: 2px solid rgba(214, 40, 40, 0.3);
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            font-size: 0.95rem;
+        }
+
+        /* Carrossel de Banners Compartimento */
+        .banner-carousel {
+            width: 100%;
+            max-height: 250px;
+            overflow: hidden;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            display: none;
+            position: relative;
+        }
+
+        .banner-slide {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        /* Alerta Fixo de Mesa Escaneada */
+        .mesa-alert-box {
+            display: none;
+            background: linear-gradient(135deg, #d62828, #b91c1c);
+            color: white;
+            padding: 0.75rem;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 12px rgba(214, 40, 40, 0.2);
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        /* Promoções Banner */
+        .promo-banner {
+            background: linear-gradient(135deg, #f8a40e, #ff6b35);
+            color: #000000;
+            padding: 1.25rem;
+            margin: 1.25rem 0;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(248, 164, 14, 0.2);
+        }
+
+        .promo-content h2 {
+            text-align: center;
+            margin: 0 0 1rem 0;
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        .promo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .promo-card {
+            background: rgba(255,255,255,0.95);
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border: 2px solid rgba(139, 0, 0, 0.1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .promo-icon {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .promo-icon img {
+            width: 55px;
+            height: 55px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .promo-card h3 {
+            margin: 0 0 0.4rem 0;
+            color: #8b0000;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .promo-price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #d62828;
+            margin: 0.3rem 0;
+        }
+
+        .promo-desc {
+            color: #666;
+            font-size: 0.8rem;
+            margin: 0 0 0.6rem 0;
+        }
+
+        .promo-add-btn {
+            background: linear-gradient(135deg, #d62828, #b91c1c);
+            color: white;
+            border: none;
+            padding: 0.4rem 0.8rem;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        /* Categories */
+        .category {
+            margin-bottom: 3rem;
+        }
+
+        .category-title {
+            background: linear-gradient(135deg, #f8a40e, #ffb84d);
+            color: #000000;
+            padding: 1.5rem 1rem;
+            border-radius: 15px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(248, 164, 14, 0.3);
+            position: sticky;
+            top: 120px;
+            z-index: 100;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .products-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .product-card {
+            background: white;
+            border: 2px solid #f8a40e;
+            border-radius: 15px;
+            padding: 1rem;
+            display: grid;
+            grid-template-columns: 80px 1fr auto auto auto;
+            gap: 1rem;
+            align-items: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-image {
+            width: 80px;
+            height: 80px;
+            background: #f8a40e;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-info h3 {
+            margin: 0 0 0.5rem 0;
+            color: #000000;
+            font-size: 1.1rem;
+        }
+
+        .product-info p {
+            margin: 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .product-serves {
+            color: #d62828;
+            font-weight: bold;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        .product-price {
+            color: #d62828;
+            font-weight: bold;
+            font-size: 1.2rem;
+            text-align: center;
+        }
+
+        .add-button {
+            background: linear-gradient(135deg, #d62828, #b91c1c);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            white-space: nowrap;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Cart Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90%;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #f8a40e;
+            padding-bottom: 1rem;
+        }
+
+        .close-button {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .qty-button {
+            background: linear-gradient(135deg, #f8a40e, #e09400);
+            color: #000000;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cart-total {
+            background: #f8a40e;
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            text-align: center;
+        }
+
+        .checkout-button {
+            background: linear-gradient(135deg, #d62828, #b91c1c);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            font-size: 1.1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Checkout Form */
+        .checkout-form {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #000000;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #f8a40e;
+            border-radius: 10px;
+            font-size: 1rem;
+        }
+
+        .delivery-options, .payment-methods {
+            display: grid;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .delivery-option, .payment-method {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            border: 2px solid #f8a40e;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .delivery-option.selected, .payment-method.selected {
+            background: #f8a40e;
+            color: #000000;
+        }
+
+        .pix-info {
+            background: #f0f9ff;
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            display: none;
+        }
+
+        .copy-button {
+            background: #f8a40e;
+            color: #000000;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 0.5rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: #000000;
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+            margin-top: 3rem;
+            margin-bottom: 80px;
+        }
+
+        /* Bottom Nav */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 65px;
+            background: #000000;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 1600;
+            border-top: 2px solid #f8a40e;
+        }
+
+        .bottom-nav button {
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 13px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            width: 20%;
+            padding: 0.5rem 0;
+        }
+
+        .bottom-nav button span {
+            font-size: 22px;
+            margin-bottom: 4px;
+        }
+
+        .bottom-nav button.active {
+            color: #f8a40e;
+        }
+
+        .bottom-nav button.admin-button {
+            background: linear-gradient(135deg, #d62828, #b91c1c);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            margin-top: -30px;
+            box-shadow: 0 4px 20px rgba(214, 40, 40, 0.5);
+            border: 3px solid #000000;
+        }
+
+        .bottom-nav button.admin-button span {
+            font-size: 28px;
+        }
+
+        /* Login Screen */
+        .login-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #f8a40e, #d62828);
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .login-box {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            max-width: 450px;
+            width: 100%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .login-logo {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .login-box h1 {
+            color: #d62828;
+            margin: 0 0 0.5rem 0;
+            font-size: 2rem;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #f8a40e;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .login-button {
+            background: linear-gradient(135deg, #d62828, #b91c1c);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            font-size: 1.1rem;
+        }
+
+        .admin-password-field {
+            display: none;
+            margin-top: 1rem;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            z-index: 3000;
+            transform: translateX(100%);
+            transition: transform 0.3s;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .toast.success { background: #22c55e; }
+        .toast.error { background: #ef4444; }
+        .toast.show { transform: translateX(0); }
+
+        /* Responsive */
+        @media (max-width: 767px) {
+            .header-content { padding: 0.75rem; }
+            .logo { font-size: 1.2rem; }
+            .logo-burger { width: 36px; height: 36px; }
+            .burger-bun-top { width: 32px; height: 11px; }
+            .burger-lettuce { width: 30px; height: 4px; }
+            .burger-meat { width: 28px; height: 6px; }
+            .burger-cheese { width: 26px; height: 3px; }
+            .burger-bun-bottom { width: 32px; height: 10px; }
+            .main-content { margin-top: 140px; padding: 0.75rem; }
+            .banner { padding: 1.25rem 1rem; }
+            .product-card { grid-template-columns: 70px 1fr auto; grid-template-rows: auto auto auto auto; align-items: start; gap: 0.75rem; }
+            .product-image { width: 70px; height: 70px; grid-row: 1 / 4; grid-column: 1; }
+            .product-info { grid-column: 2 / 4; grid-row: 1; }
+            .product-serves { grid-column: 2; grid-row: 2; text-align: left; }
+            .product-price { grid-column: 3; grid-row: 2; text-align: right; }
+            .add-button { grid-column: 2 / 4; grid-row: 3; margin-top: 0.75rem; width: 100%; }
+        }
+
+        /* Sub-abas Admin */
+        .admin-tabs {
+            display: flex;
+            gap: 0.5rem;
+            border-bottom: 2px solid #e5e7eb;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+        }
+        .admin-tab-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            background: none;
+            font-weight: bold;
+            cursor: pointer;
+            color: #666;
+        }
+        .admin-tab-btn.active {
+            color: #d62828;
+            border-bottom: 3px solid #d62828;
+        }
+        .admin-pane {
+            display: none;
+        }
+        .admin-pane.active {
+            display: block;
+        }
+    </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body><div class="login-screen" id="login-screen">
+   <div class="login-box">
+    <div class="login-logo" id="login-logo-container">
+     🍔
+    </div>
+    <h1>Bem-vindo!</h1>
+    <p>Digite seu telefone para acessar</p><input type="tel" id="login-phone" class="login-input" placeholder="(18) 99999-9999" maxlength="15" oninput="formatPhoneLogin(this); checkAdminPhone()">
+    
+    <div class="admin-password-field" id="admin-password-field">
+     <p style="color: #d62828; font-weight: bold; margin: 0 0 0.5rem 0;">🔐 Acesso Administrativo</p>
+     <div style="position: relative;">
+        <input type="password" id="admin-password" class="login-input" placeholder="Digite a senha admin" style="border-color: #d62828; padding-right: 40px;">
+        <span onclick="togglePasswordVisibility()" style="position: absolute; right: 15px; top: 15px; cursor: pointer; color: #666; font-size: 1.2rem;">
+            <i id="password-eye-icon" class="fa-solid fa-eye"></i>
+        </span>
+     </div>
+    </div><button class="login-button" onclick="loginWithPhone()"> 📱 Entrar </button>
+    <div style="margin-top: 2rem; padding: 1rem; background: linear-gradient(135deg, #fef3c7, #fbbf24); border-radius: 10px; font-size: 0.9rem; color: #92400e;"><strong>🔒 Privacidade Garantida</strong><br>
+       Seu telefone é usado apenas para identificar seus pedidos.<br>
+       Você verá apenas o histórico dos seus pedidos.
+    </div>
+   </div>
+  </div>
+  
+  <header class="header" id="main-header-bg">
+   <div class="header-content">
+    <div class="header-top">
+     <div class="logo" id="restaurant-name">
+      <div id="restaurant-logo-container" class="flex items-center gap-2">
+          <div class="logo-burger" id="default-animated-burger">
+           <div class="burger-bun-top"></div>
+           <div class="burger-lettuce"></div>
+           <div class="burger-meat"></div>
+           <div class="burger-cheese"></div>
+           <div class="burger-bun-bottom"></div>
+          </div>
+      </div>
+      <span id="restaurant-title-text">Concha Lanches</span>
+     </div>
+     <div class="user-badge" id="user-badge" onclick="showUserMenu()" title="Clique para ver suas informações"><span>👤</span> <span id="user-name-display">Cliente</span>
+     </div>
+    </div>
+    <nav class="nav-menu" id="nav-menu-container"><a href="#lanches-hamburguer" onclick="setActiveCategory(this)">🍔 Hambúrguer</a> <a href="#lanches-pao-frances" onclick="setActiveCategory(this)">🥖 Bauru</a> <a href="#lanches-file" onclick="setActiveCategory(this)">🥩 Filé</a> <a href="#lanches-frango" onclick="setActiveCategory(this)">🍗 Frango</a> <a href="#hot-dog" onclick="setActiveCategory(this)">🌭 Hot Dog</a> <a href="#lanches-especiais" onclick="setActiveCategory(this)">⭐ Outros</a> <a href="#promocao" onclick="setActiveCategory(this)">🎉 Promoção</a> <a href="#combos-familia" onclick="setActiveCategory(this)">👨‍👩‍👧‍👦 Combos</a> <a href="#bebidas" onclick="setActiveCategory(this)">🥤 Bebidas</a>
+    </nav>
+   </div>
+  </header>
+  
+  <main class="main-content">
+   <div id="mesa-alert-salao" class="mesa-alert-box"></div>
+
+   <div class="banner-carousel" id="top-banner-carousel">
+       <img class="banner-slide" id="slide-1" src="" alt="Banner Promo 1">
+       <img class="banner-slide" id="slide-2" src="" alt="Banner Promo 2">
+       <img class="banner-slide" id="slide-3" src="" alt="Banner Promo 3">
+   </div>
+
+   <section class="banner" id="hero-banner-bg">
+    <h1 id="banner-welcome-title">Bem-vindo à Concha Lanches!</h1>
+    <p id="banner-subtitle-text">Os melhores lanches de Assis desde 2005</p>
+    <p><strong>🍔 Pedido mínimo: R$ <span id="banner-min-order">15,00</span></strong></p>
+    <div style="margin-top: 1rem; padding: 1.5rem; background: #000000; color: white; border-radius: 10px; font-size: 0.9rem;">
+     <div style="font-weight: bold; margin-bottom: 1rem; font-size: 1rem;">
+       Anúncios e Horários:
+     </div>
+     <div id="banner-hours-display" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.75rem; text-align: left; margin-bottom: 1.5rem;">
+      <div><strong>Qua–Sex:</strong> 18:45–22:00</div>
+      <div><strong>Sáb–Dom:</strong> 18:30–22:00</div>
+      <div><strong>Seg–Ter:</strong> Fechado ❌</div>
+     </div>
+     <div id="banner-address-text" style="padding-top: 1rem; border-top: 2px solid rgba(255,255,255,0.2); text-align: center; font-weight: bold;">
+       📍 R. Humberto de Campos, 25 - Centro - Assis/SP
+     </div>
+    </div>
+    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1.5rem;"><a href="https://maps.google.com" id="google-maps-banner-btn" target="_blank" rel="noopener noreferrer" class="banner-button" style="text-decoration: none;"> 📍 Ver no Google Maps </a>
+    </div>
+   </section><section class="promo-banner" id="promo-banner-bg">
+    <div class="promo-content">
+     <h2>🎉 PROMOÇÕES IMPERDÍVEIS!</h2>
+     <div class="promo-grid" id="promotions-cards-grid">
+      </div>
+    </div>
+   </section>
+   
+   <div id="categories-container">
+    <div style="text-align: center; padding: 2rem; color: #666;">
+       Carregando cardápio...
+    </div>
+   </div><section style="background: linear-gradient(135deg, #fef3c7, #fbbf24); border: 2px solid #f59e0b; border-radius: 15px; padding: 1.5rem; margin: 2rem 0; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.2);">
+    <div class="notice-content">
+     <h3 style="color: #92400e; text-align: center; margin: 0 0 1rem 0; font-size: 1.1rem;">🚨 <strong>ATENÇÃO: PARA CONFIRMAR O PEDIDO</strong> 🚨</h3>
+     <p style="color: #92400e; text-align: center; margin: 0 0 1rem 0; font-weight: 500;">O pedido só será liberado após envio do comprovante.</p>
+     <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+      <div style="display: flex; align-items: center; gap: 0.75rem; background: rgba(255, 255, 255, 0.7); padding: 0.75rem; border-radius: 10px; color: #92400e; font-weight: 500;"><span style="font-size: 1.2rem;">1️⃣</span> <span>Envie o pedido</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 0.75rem; background: rgba(255, 255, 255, 0.7); padding: 0.75rem; border-radius: 10px; color: #92400e; font-weight: 500;"><span style="font-size: 1.2rem;">2️⃣</span> <span>Na mesma conversa, envie o comprovante do Pix</span>
+      </div>
+     </div>
+    </div>
+   </section>
+  </main>
+
+  <div class="modal" id="cart-modal">
+   <div class="modal-content">
+    <div class="modal-header">
+     <h2>Seu Carrinho</h2><button class="close-button" onclick="closeCart()">×</button>
+    </div>
+    <div id="cart-items"></div>
+    <div class="cart-total" id="cart-total">
+     <div>
+       Subtotal: R$ 0,00
+     </div>
+     <div>
+       Taxa de entrega: R$ <span id="delivery-fee-display">8,00</span>
+     </div>
+     <div>
+      <strong>Total: R$ 0,00</strong>
+     </div>
+    </div>
+    <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+        <button class="checkout-button" onclick="closeCart()" style="flex: 1; background: #6c757d;"> <i class="fa-solid fa-arrow-left"></i> Voltar / Comprar Mais </button> 
+        <button class="checkout-button" onclick="showCheckout()" id="checkout-btn" style="flex: 1;"> 📋 Finalizar Pedido </button>
+    </div>
+    
+    <div class="checkout-form" id="checkout-form">
+     <h3>Tipo de Pedido</h3>
+     <div class="delivery-options">
+      <div class="delivery-option" onclick="selectDeliveryType('balcao')"><input type="radio" name="delivery-type" value="balcao" id="delivery-balcao"> <label for="delivery-balcao">🏪 Retirar no Balcão (Grátis)</label>
+      </div>
+      <div class="delivery-option" onclick="selectDeliveryType('delivery')"><input type="radio" name="delivery-type" value="delivery" id="delivery-delivery"> <label for="delivery-delivery">🏍️ Delivery - R$ <span id="checkout-delivery-fee">8,00</span></label>
+      </div>
+      <div class="delivery-option" onclick="selectDeliveryType('salao')"><input type="radio" name="delivery-type" value="salao" id="delivery-salao"> <label for="delivery-salao">🪑 Comer no Salão (Mesa)</label>
+      </div>
+     </div>
+     
+     <h3>Dados do Cliente</h3>
+     <div class="form-group"><label for="customer-name">Nome completo:</label> <input type="text" id="customer-name" required>
+     </div>
+     
+     <div id="salao-table-section" style="display: none;" class="bg-red-50 p-3 rounded-xl border border-red-200 mb-3">
+         <div class="form-group mb-0">
+             <label for="customer-table-number" class="text-red-800">Número da Mesa que você está sentando: *</label>
+             <input type="text" id="customer-table-number" placeholder="Ex: 05, 12, 18">
+         </div>
+     </div>
+
+     <div id="delivery-address-section" style="display: none;">
+      <h3>Endereço para Entrega</h3>
+      <div class="form-group"><label for="customer-cep">CEP: *</label>
+       <div style="display: flex; gap: 0.5rem; align-items: center;"><input type="text" id="customer-cep" placeholder="00000-000" maxlength="9" style="flex: 1;" oninput="formatCEP(this)" onkeypress="handleCEPKeyPress(event)"> <button type="button" onclick="searchCEP()" style="background: linear-gradient(135deg, #f8a40e, #e09400); color: #000000; border: none; padding: 0.75rem 1.5rem; border-radius: 10px; cursor: pointer; font-weight: bold; white-space: nowrap; transition: all 0.3s ease;" id="cep-search-btn"> 🔍 Buscar </button>
+       </div><small id="cep-status" style="display: block; margin-top: 0.5rem; font-size: 0.85rem;"></small>
+      </div>
+      <div class="form-group"><label for="customer-street">Rua: *</label> <input type="text" id="customer-street" readonly style="background: #f5f5f5;">
+      </div>
+      <div class="form-group"><label for="customer-neighborhood">Bairro: *</label> <input type="text" id="customer-neighborhood" readonly style="background: #f5f5f5;">
+      </div>
+      <div class="form-group"><label for="customer-city">Cidade: *</label> <input type="text" id="customer-city" readonly style="background: #f5f5f5;">
+      </div>
+      <div class="form-group"><label for="customer-number">Número: *</label> <input type="text" id="customer-number" placeholder="Ex: 123" oninput="updateMapLink()">
+      </div>
+      <div class="form-group"><label for="customer-complement">Complemento:</label> <input type="text" id="customer-complement" placeholder="Ex: Apto 45, Bloco B (opcional)">
+      </div>
+      <div class="form-group"><label for="customer-reference">📍 Ponto de referência: *</label> <input type="text" id="customer-reference" placeholder="Ex: Próximo ao mercado, em frente à praça">
+      </div>
+      <div class="form-group"><label>🗺️ Link do Mapa:</label>
+       <div id="map-link" style="padding: 0.75rem; background: #f0f9ff; border: 2px solid #0ea5e9; border-radius: 10px; font-size: 0.9rem; color: #0369a1;">
+          O link será gerado automaticamente após preencher o endereço
+       </div>
+      </div>
+     </div>
+     <div class="form-group"><label for="customer-phone">Telefone:</label> <input type="tel" id="customer-phone" placeholder="(18) 99999-9999" required readonly style="background: #f5f5f5;">
+     </div>
+     <h3>Forma de Pagamento</h3>
+     <div class="payment-methods">
+      <div class="payment-method" onclick="selectPayment('cartao')"><input type="radio" name="payment" value="cartao" id="payment-card"> <label for="payment-card">💳 Cartão via maquininha</label>
+      </div>
+      <div class="payment-method" onclick="selectPayment('dinheiro')"><input type="radio" name="payment" value="dinheiro" id="payment-cash"> <label for="payment-cash">💸 Dinheiro (troco se necessário)</label>
+      </div>
+      <div class="payment-method" onclick="selectPayment('pix')"><input type="radio" name="payment" value="pix" id="payment-pix"> <label for="payment-pix">🔑 PIX (<span id="checkout-pix-type-label">Celular</span>): <span id="checkout-pix-key">18997783811</span></label>
+      </div>
+     </div>
+     <div class="form-group" id="change-group" style="display: none;"><label for="change-amount">Troco para quanto?</label> <input type="number" id="change-amount" placeholder="0,00" step="0.01" oninput="updateCartTotal()"> <small style="color: #666; font-size: 0.8rem; margin-top: 0.25rem; display: block;"> 💡 Digite o valor que você vai pagar e veja o troco calculado automaticamente </small>
+     </div>
+     <div class="pix-info" id="pix-info">
+      <p><strong>Chave PIX (<span id="checkout-pix-type-badge">Celular</span>):</strong></p>
+      <p id="pix-key-display">18997783811</p><button class="copy-button" onclick="copyPixKey()" id="pix-copy-btn">Copiar chave PIX</button>
+     </div>
+     <div class="form-group"><label for="order-notes">Observações:</label> <textarea id="order-notes" placeholder="Alguma observação especial?"></textarea>
+     </div>
+     
+     <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+         <button type="button" onclick="backToCartItemsReview()" class="checkout-button" style="background: #6c757d; font-size: 1rem; padding: 0.75rem;"><i class="fa-solid fa-arrow-left"></i> Corrigir Itens</button>
+         <button class="checkout-button" onclick="sendToWhatsApp()" style="flex: 2;">Confirmar Pedido</button>
+     </div>
+    </div>
+   </div>
+  </div>
+
+  <div class="bottom-nav" id="bottom-nav"><button onclick="goHome()" id="btnHome" class="active"> <span>🏠</span> Início </button> <button onclick="openSearch()" id="btnSearch"> <span>🔍</span> Buscar </button> <button onclick="openCartNav()" id="btnCart"> <span>🛒</span> Carrinho <span class="cart-count" id="cart-count">0</span> </button> <button onclick="openOrders()" id="btnOrders"> <span>📄</span> Pedidos </button> <button onclick="openProfile()" id="btnProfile"> <span>👤</span> Perfil </button>
+  </div>
+  
+  <footer class="footer">
+   <div class="footer-info">
+    <p id="footer-copyright-text">© Concha Lanches - Desde 2005 | Os melhores lanches de Assis 🍔</p>
+   </div>
+  </footer>
+
+  <script>
+        // Default Configuration
+        const defaultConfig = {
+            restaurant_name: "Pastel & Cia",
+            delivery_fee: "8.00",
+            pix_key: "18998165086",
+            pix_type: "Celular",
+            whatsapp_number: "5518998165086",
+            address: "Rua Humberto de Campos, 25 – Centro – Assis/SP • CEP 19802-090",
+            hours: "Qua–Sex: 18:45–22:00 • Sáb–Dom: 18:30–22:00 • Seg/Ter: Fechado",
+            primary_color: "#f8a40e",
+            min_order: "15.00",
+            welcome_title: "Bem-vindo à Concha Lanches!",
+            welcome_subtitle: "Os melhores lanches de Assis desde 2005",
+            restaurant_logo_url: "",
+            banner_img_1: "",
+            banner_img_2: "",
+            banner_img_3: ""
+        };
+
+        const defaultPromos = [
+            { id: "100", name: "3 Hot Dogs", price: 50.00, desc: "Economia de R$ 10,00!", icon: "🌭" },
+            { id: "101", name: "Combo Família", price: 49.99, desc: "3 X-Burguers + Refri 2L", icon: "👨‍👩‍👧‍👦" },
+            { id: "102", name: "Mini-Gilda", price: 49.99, desc: "Serve 2 pessoas!", icon: "🍔" }
+        ];
+
+        const ADMIN_PHONE = "18998165086";
+        const ADMIN_PASSWORD = "Concha@2005";
+
+        // Global state
+        let currentUserPhone = '';
+        let currentUserName = '';
+        let userOrders = [];
+        let allOrders = [];
+        let isAdmin = false;
+        let config = { ...defaultConfig };
+        let promosList = [ ...defaultPromos ];
+        let carouselInterval = null;
+        
+        // Variavel global que detecta a Mesa escaneada via URL
+        let numeroMesaDetectada = null;
+
+        // Sample products data
+        const sampleProducts = [
+            { id: "1", name: "X-Burguer", description: "Pão de Hambúrguer, Hambúrguer, Maionese e Muçarela", serves: "1 pessoa", price: 16.50, image: "🍔", category: "lanches-hamburguer", active: true, order: 1 },
+            { id: "2", name: "X-Burguer 3 Queijos", description: "Pão, Hambúrguer, Muçarela, Cheddar e Catupiry", serves: "1 pessoa", price: 20.00, image: "🍔", category: "lanches-hamburguer", active: true, order: 2 },
+            { id: "3", name: "X-Burguer Especial", description: "Pão de Hambúrguer, 2 Hambúrgueres, Muçarela e Maionese", serves: "1 pessoa", price: 21.00, image: "🍔", category: "lanches-hamburguer", active: true, order: 3 },
+            { id: "4", name: "X-Salada", description: "Pão de Hambúrguer, Hambúrguer, Muçarela, Alface, Tomate e Maionese", serves: "1 pessoa", price: 18.50, image: "🍔", category: "lanches-hamburguer", active: true, order: 4 },
+            { id: "5", name: "X-Salada 3 Queijos", description: "Pão, Hambúrguer, Muçarela, Cheddar, Catupiry, Alface e Tomate", serves: "1 pessoa", price: 22.00, image: "🍔", category: "lanches-hamburguer", active: true, order: 5 },
+            { id: "6", name: "X-Salada Especial", description: "Pão de Hambúrguer, 2 Hambúrgueres, Alface, Tomate, Maionese e Muçarela", serves: "1 pessoa", price: 22.00, image: "🍔", category: "lanches-hamburguer", active: true, order: 6 },
+            { id: "7", name: "X-Calabresa", description: "Pão de Hambúrguer, Hambúrguer, Calabresa, Muçarela, Alface, Tomate e Maionese", serves: "1 pessoa", price: 25.00, image: "🍔", category: "lanches-hamburguer", active: true, order: 7 },
+            { id: "8", name: "X-Calabresa Catupiry", description: "Pão de Hambúrguer, Hambúrguer, Calabresa, Catupiry, Muçarela, Alface, Tomate e Maionese", serves: "1 pessoa", price: 27.00, image: "🍔", category: "lanches-hamburguer", active: true, order: 8 },
+            { id: "9", name: "X-Bacon", description: "Pão de Hambúrguer, Hambúrguer, Muçarela, Bacon, Alface, Tomate e Maionese", serves: "1 pessoa", price: 26.00, image: "🍔", category: "lanches-hamburguer", active: true, order: 9 },
+            { id: "10", name: "X-Bacon Catupiry", description: "Pão de Hambúrguer, Hambúrguer, Bacon, Catupiry, Muçarela, Alface, Tomate e Maionese", serves: "1 pessoa", price: 28.00, image: "🍔", category: "lanches-hamburguer", active: true, order: 10 },
+            { id: "11", name: "X-Bacon Calabresa", description: "Pão de Hambúrguer, Hambúrguer, Bacon, Calabresa, Muçarela, Alface, Tomate e Maionese", serves: "1 pessoa", price: 29.00, image: "🍔", category: "lanches-hamburguer", active: true, order: 11 },
+            { id: "12", name: "X-Tudo", description: "Pão de Hambúrguer, Hambúrguer, Bacon, Calabresa, Presunto, Muçarela, Ovo, Alface, Maionese e Tomate", serves: "1 pessoa", price: 32.00, image: "🍔", category: "lanches-hamburguer", active: true, order: 12 },
+            { id: "13", name: "X-Tudo 3 Queijos", description: "Pão, Hambúrguer, Bacon, Calabresa, Presunto, Muçarela, Cheddar, Catupiry, Ovo, Alface, Tomate e Maionese", serves: "1 pessoa", price: 35.00, image: "🍔", category: "lanches-hamburguer", active: true, order: 13 },
+            { id: "14", name: "X-Egg (Ovo)", description: "Pão de Hambúrguer, Hambúrguer, Ovo, Muçarela, Alface, Tomate e Maionese", serves: "1 pessoa", price: 25.00, image: "🍔", category: "lanches-hamburguer", active: true, order: 14 },
+            { id: "15", name: "Bauru", description: "Pão Francês, Carne Bovina, Muçarela, Cebola, Tomate e Maionese", serves: "2 pessoas", price: 32.00, image: "🥖", category: "lanches-pao-frances", active: true, order: 1 },
+            { id: "16", name: "Bauru Catupiry", description: "Pão Francês, Carne Bovina, Catupiry, Muçarela, Cebola, Tomate e Maionese", serves: "2 pessoas", price: 35.00, image: "🥖", category: "lanches-pao-frances", active: true, order: 2 },
+            { id: "17", name: "Bauru 3 Queijos", description: "Pão Francês, Carne Bovina, Muçarela, Cheddar, Catupiry, Cebola, Tomate e Maionese", serves: "2 pessoas", price: 37.00, image: "🥖", category: "lanches-pao-frances", active: true, order: 3 },
+            { id: "18", name: "Bauru Bacon ou Calabresa", description: "Pão Francês, Carne Bovina, Bacon OU Calabresa, Muçarela, Cebola, Tomate e Maionese", serves: "2 pessoas", price: 40.00, image: "🥖", category: "lanches-pao-frances", active: true, order: 4 },
+            { id: "19", name: "Bauru Tudo", description: "Pão Francês, Carne Bovina, Bacon, Calabresa, Ovo, Cebola, Muçarela, Tomate e Maionese", serves: "2 pessoas", price: 45.00, image: "🥖", category: "lanches-pao-frances", active: true, order: 5 },
+            { id: "20", name: "X-Filé", description: "Pão de Hambúrguer, Contra-Filé, Muçarela, Alface, Tomate e Maionese", serves: "1 pessoa", price: 40.00, image: "🥩", category: "lanches-file", active: true, order: 1 },
+            { id: "21", name: "X-Filé 3 Queijos", description: "Pão, Contra-Filé, Muçarela, Cheddar, Catupiry, Alface, Tomate e Maionese", serves: "1 pessoa", price: 42.00, image: "🥩", category: "lanches-file", active: true, order: 2 },
+            { id: "22", name: "X-Filé Bacon ou Calabresa", description: "Pão, Contra-Filé, Bacon OU Calabresa, Muçarela, Alface, Tomate e Maionese", serves: "1 pessoa", price: 45.00, image: "🥩", category: "lanches-file", active: true, order: 3 },
+            { id: "23", name: "X-Filé Tudo", description: "Pão, Contra-Filé, Bacon, Calabresa, Presunto, Ovo, Muçarela, Alface, Tomate e Maionese", serves: "1 pessoa", price: 48.00, image: "🥩", category: "lanches-file", active: true, order: 4 },
+            { id: "24", name: "X-Frango", description: "Pão de Hambúrguer, Filé de Frango, Muçarela, Alface, Tomate e Maionese", serves: "1 pessoa", price: 25.00, image: "🍗", category: "lanches-frango", active: true, order: 1 },
+            { id: "25", name: "X-Frango Catupiry", description: "Pão, Filé de Frango, Catupiry, Muçarela, Alface, Tomate e Maionese", serves: "1 pessoa", price: 28.00, image: "🍗", category: "lanches-frango", active: true, order: 2 },
+            { id: "26", name: "X-Frango Bacon ou Calabresa", description: "Pão, Filé de Frango, Bacon OU Calabresa, Muçarela, Alface, Tomate e Maionese", serves: "1 pessoa", price: 30.00, image: "🍗", category: "lanches-frango", active: true, order: 3 },
+            { id: "27", name: "X-Frango Tudo", description: "Pão, Filé de Frango, Bacon, Calabresa, Presunto, Ovo, Muçarela, Alface, Tomate e Maionese", serves: "1 pessoa", price: 38.00, image: "🍗", category: "lanches-frango", active: true, order: 4 },
+            { id: "28", name: "Hot Dog 1", description: "Pão de Leite, 1 Salsicha, Tomate, Catchup, Maionese, Mostarda e Batata-Palha", serves: "1 pessoa", price: 16.50, image: "🌭", category: "hot-dog", active: true, order: 1 },
+            { id: "29", name: "Hot Dog 2", description: "Pão de Leite, 2 Salsichas, Presunto, Muçarela, Tomate, Catchup, Maionese, Mostarda e Batata-Palha", serves: "1 pessoa", price: 28.00, image: "🌭", category: "hot-dog", active: true, order: 2 },
+            { id: "30", name: "Hot Dog 2 Catupiry", description: "Pão de Leite, 2 Salsichas, Catupiry, Presunto, Muçarela, Tomate, Catchup, Maionese, Mostarda e Batata-Palha", serves: "1 pessoa", price: 23.00, image: "🌭", category: "hot-dog", active: true, order: 3 },
+            { id: "31", name: "Hot Dog Especial", description: "Pão de Leite, 1 Salsicha, Presunto em Cubo, Muçarela, Bacon, Tomate, Catchup, Maionese, Mostarda e Batata-Palha", serves: "1 pessoa", price: 26.00, image: "🌭", category: "hot-dog", active: true, order: 4 },
+            { id: "32", name: "Hot Dog Especial Duplo", description: "Pão de Leite, 2 Salsichas, Presunto em Cubos, Muçarela, Bacon, Tomate, Catchup, Maionese, Mostarda e Batata-Palha", serves: "1 pessoa", price: 27.00, image: "🌭", category: "hot-dog", active: true, order: 5 },
+            { id: "33", name: "Dog Especial Catupiry", description: "Pão de Leite, 1 Salsicha, Catupiry, Presunto em Cubo, Muçarela, Bacon, Tomate, Catchup, Maionese, Mostarda e Batata-Palha", serves: "1 pessoa", price: 28.00, image: "🌭", category: "hot-dog", active: true, order: 6 },
+            { id: "34", name: "Misto Quente Catupiry", description: "Pão, Presunto, Muçarela e Catupiry", serves: "1 pessoa", price: 25.00, image: "🥪", category: "lanches-especiais", active: true, order: 1 },
+            { id: "35", name: "Gildona", description: "Pão Francês Grande, Hambúrguer, Filé de Frango, Contra-Filé, Bacon, Calabresa, Muçarela, Catupiry, Presunto, Batata-Palha, Alface, Tomate e Maionese", serves: "3-4 pessoas", price: 79.00, image: "🍔", category: "lanches-especiais", active: true, order: 2 },
+            { id: "36", name: "Americano 1", description: "Pão de Hambúrguer, Hambúrguer, Maionese, Presunto, Ovo, Alface e Tomate", serves: "1 pessoa", price: 25.00, image: "🍔", category: "lanches-especiais", active: true, order: 3 },
+            { id: "200", name: "Coca Lata", description: "Refrigerante Coca-Cola em lata 350ml", serves: "1 pessoa", price: 6.00, image: "🥤", category: "bebidas", active: true, order: 1 }
+        ];
+
+        const categories = {
+            "lanches-hamburguer": "🍔 Lanches com Hambúrguer",
+            "lanches-pao-frances": "🥖 Lanches no Pão Francês (Bauru)",
+            "lanches-file": "🥩 Lanches com Filé",
+            "lanches-frango": "🍗 Lanches com Frango",
+            "hot-dog": "🌭 Hot Dog",
+            "lanches-especiais": "⭐ Outros Lanches",
+            "promocao": "🎉 Promoção",
+            "combos-familia": "👨‍👩‍👧‍👦 Combos Família",
+            "bebidas": "🥤 Bebidas"
+        };
+
+        // Local Storage Sync System
+        function syncConfig() {
+            if (localStorage.getItem('app_config')) {
+                config = JSON.parse(localStorage.getItem('app_config'));
+                if(config.pix_type === undefined) config.pix_type = "Celular";
+            } else {
+                localStorage.setItem('app_config', JSON.stringify(defaultConfig));
+            }
+
+            if (localStorage.getItem('app_products')) {
+                products = JSON.parse(localStorage.getItem('app_products'));
+            } else {
+                products = [...sampleProducts];
+                localStorage.setItem('app_products', JSON.stringify(sampleProducts));
+            }
+
+            if (localStorage.getItem('app_promos')) {
+                promosList = JSON.parse(localStorage.getItem('app_promos'));
+            } else {
+                localStorage.setItem('app_promos', JSON.stringify(defaultPromos));
+            }
+
+            if (localStorage.getItem('all_orders')) {
+                allOrders = JSON.parse(localStorage.getItem('all_orders'));
+            }
+
+            // Checagem de QR Code na URL (?mesa=XX)
+            detectarMesaDoQrCode();
+            applyConfigTheme();
+        }
+
+        // Lógica de Captação e Leitura Automática de QR Code
+        function detectarMesaDoQrCode() {
+            const params = new URLSearchParams(window.location.search);
+            const mesaUrl = params.get('mesa');
+            if (mesaUrl && mesaUrl.trim() !== "") {
+                numeroMesaDetectada = mesaUrl.trim();
+                
+                // Exibir aviso vermelho de mesa fixada no topo
+                const alertBox = document.getElementById('mesa-alert-salao');
+                if(alertBox) {
+                    alertBox.style.display = 'block';
+                    alertBox.innerHTML = `🪑 Atendimento de Salão Localizado: Você está na <strong>MESA ${numeroMesaDetectada}</strong>`;
+                }
+            }
+        }
+
+        function togglePasswordVisibility() {
+            const pwdInput = document.getElementById('admin-password');
+            const eyeIcon = document.getElementById('password-eye-icon');
+            if (pwdInput.type === "password") {
+                pwdInput.type = "text";
+                eyeIcon.classList.remove('fa-eye');
+                eyeIcon.classList.add('fa-eye-slash');
+            } else {
+                pwdInput.type = "password";
+                eyeIcon.classList.remove('fa-eye-slash');
+                eyeIcon.classList.add('fa-eye');
+            }
+        }
+
+        function applyConfigTheme() {
+            document.getElementById('page-title').textContent = `${config.restaurant_name} - Cardápio Digital`;
+            document.getElementById('restaurant-title-text').textContent = config.restaurant_name;
+            document.getElementById('main-header-bg').style.backgroundColor = config.primary_color;
+            document.getElementById('delivery-fee-display').textContent = parseFloat(config.delivery_fee).toFixed(2).replace('.', ',');
+            document.getElementById('checkout-delivery-fee').textContent = parseFloat(config.delivery_fee).toFixed(2).replace('.', ',');
+            
+            document.getElementById('checkout-pix-type-label').textContent = config.pix_type;
+            document.getElementById('checkout-pix-type-badge').textContent = config.pix_type;
+            document.getElementById('checkout-pix-key').textContent = config.pix_key;
+            document.getElementById('pix-key-display').textContent = config.pix_key;
+            
+            document.getElementById('banner-welcome-title').textContent = config.welcome_title;
+            document.getElementById('banner-subtitle-text').textContent = config.welcome_subtitle;
+            document.getElementById('banner-min-order').textContent = parseFloat(config.min_order).toFixed(2).replace('.', ',');
+            document.getElementById('banner-address-text').textContent = "📍 " + config.address;
+            
+            // Atualizar Horários no Banner
+            const hoursDisplay = document.getElementById('banner-hours-display');
+            if(hoursDisplay) {
+                const lines = config.hours.split('\n').filter(l => l.trim() !== "");
+                hoursDisplay.innerHTML = lines.map(h => `<span>${h}</span>`).join('');
+            }
+            
+            // Atualizar Logo no Login
+            const loginLogo = document.getElementById('login-logo-container');
+            if(loginLogo && config.restaurant_logo_url && config.restaurant_logo_url.trim() !== "") {
+                loginLogo.innerHTML = `<img src="${config.restaurant_logo_url}" style="width:100%; height:100%; object-fit:contain; border-radius:10px;">`;
+                loginLogo.style.background = 'white';
+                loginLogo.style.padding = '5px';
+            } else if(loginLogo) {
+                loginLogo.innerHTML = '🍔';
+                loginLogo.style.background = '';
+                loginLogo.style.padding = '0';
+            }
+            
+            document.getElementById('footer-copyright-text').textContent = `© ${config.restaurant_name} - Todos os direitos reservados • ${config.welcome_subtitle}`;
+
+            const logoContainer = document.getElementById('restaurant-logo-container');
+            if (config.restaurant_logo_url && config.restaurant_logo_url.trim() !== "") {
+                logoContainer.innerHTML = `<img src="${config.restaurant_logo_url.trim()}" alt="Logo" style="width:40px; height:40px; object-fit:cover; border-radius:50%; border:2px solid #000;">`;
+            } else {
+                logoContainer.innerHTML = `
+                  <div class="logo-burger" id="default-animated-burger">
+                   <div class="burger-bun-top"></div>
+                   <div class="burger-lettuce"></div>
+                   <div class="burger-meat"></div>
+                   <div class="burger-cheese"></div>
+                   <div class="burger-bun-bottom"></div>
+                  </div>`;
+            }
+
+            const carouselContainer = document.getElementById('top-banner-carousel');
+            const slides = [config.banner_img_1, config.banner_img_2, config.banner_img_3].filter(url => url && url.trim() !== "");
+            
+            if(slides.length > 0) {
+                carouselContainer.style.display = 'block';
+                carouselContainer.innerHTML = slides.map((url, i) => `<img class="banner-slide" id="slide-${i}" src="${url.trim()}" style="width:100%; height:180px; object-fit:cover; display:${i===0?'block':'none'};">`).join('');
+                
+                if(carouselInterval) clearInterval(carouselInterval);
+                let currentSlideIndex = 0;
+                const slideImgs = carouselContainer.querySelectorAll('.banner-slide');
+                if(slideImgs.length > 1) {
+                    carouselInterval = setInterval(() => {
+                        slideImgs[currentSlideIndex].style.display = 'none';
+                        currentSlideIndex = (currentSlideIndex + 1) % slideImgs.length;
+                        slideImgs[currentSlideIndex].style.display = 'block';
+                    }, 4000);
+                }
+            } else {
+                carouselContainer.style.display = 'none';
+                if(carouselInterval) clearInterval(carouselInterval);
+            }
+
+            document.querySelectorAll('.nav-menu a.active').forEach(a => {
+                a.style.backgroundColor = config.primary_color;
+            });
+
+            renderStaticPromotions();
+        }
+
+        function renderStaticPromotions() {
+            const promoGrid = document.getElementById('promotions-cards-grid');
+            promoGrid.innerHTML = '';
+            promosList.forEach(p => {
+                let visualIcon = p.icon;
+                if(p.icon.startsWith('http://') || p.icon.startsWith('https://')) {
+                    visualIcon = `<img src="${p.icon.trim()}" alt="Promo">`;
+                }
+                promoGrid.innerHTML += `
+                  <div class="promo-card" onclick="addToCart('${p.id}')">
+                   <div class="promo-icon">${visualIcon}</div>
+                   <h3>${p.name}</h3>
+                   <p class="promo-price">R$ ${p.price.toFixed(2).replace('.', ',')}</p>
+                   <p class="promo-desc">${p.desc}</p>
+                   <button class="promo-add-btn" style="background: linear-gradient(135deg, ${config.primary_color}, #000); color: #fff;" onclick="event.stopPropagation(); addToCart('${p.id}')">+ Adicionar</button>
+                  </div>
+                `;
+            });
+        }
+
+        // Login functions
+        function formatPhoneLogin(input) {
+            let value = input.value.replace(/\D/g, '');
+            if (value.length > 11) value = value.slice(0, 11);
+            if (value.length <= 10) {
+                value = value.replace(/^(\d{2})(\d{0,4})(\d{0,4}).*/, '($1) $2-$3');
+            } else {
+                value = value.replace(/^(\d{2})(\d{5})(\d{0,4}).*/, '($1) $2-$3');
+            }
+            input.value = value.trim().replace(/\s*-\s*$/, '').replace(/\(\s*\)\s*/, '');
+        }
+
+        function checkAdminPhone() {
+            const phoneInput = document.getElementById('login-phone');
+            const phone = phoneInput.value.replace(/\D/g, '');
+            const passwordField = document.getElementById('admin-password-field');
+            if (phone === ADMIN_PHONE) {
+                passwordField.style.display = 'block';
+            } else {
+                passwordField.style.display = 'none';
+                document.getElementById('admin-password').value = '';
+            }
+        }
+
+        async function loginWithPhone() {
+            const phoneInput = document.getElementById('login-phone');
+            const phone = phoneInput.value.replace(/\D/g, '');
+            if (phone.length < 10) {
+                showToast('Digite um telefone válido', 'error');
+                return;
+            }
+            if (phone === ADMIN_PHONE) {
+                const passwordInput = document.getElementById('admin-password');
+                const password = passwordInput.value;
+                if (!password) {
+                    showToast('Digite a senha de administrador', 'error');
+                    return;
+                }
+                if (password !== ADMIN_PASSWORD) {
+                    showToast('❌ Senha incorreta! Acesso negado.', 'error');
+                    return;
+                }
+                isAdmin = true;
+                showToast('🔐 Login Admin realizado com sucesso!', 'success');
+            }
+            currentUserPhone = phone;
+            const loginButton = document.querySelector('.login-button');
+            loginButton.disabled = true;
+            loginButton.textContent = '⏳ Entrando...';
+            setTimeout(() => {
+                document.getElementById('login-screen').style.display = 'none';
+                if (isAdmin) {
+                    showToast('✅ Bem-vindo, Administrador! 🔧', 'success');
+                    updateUIForAdmin();
+                    setTimeout(() => { openAdminPanel(); }, 500);
+                } else {
+                    showToast('✅ Login realizado com sucesso!', 'success');
+                }
+                loadUserData();
+            }, 1000);
+        }
+
+        function updateUIForAdmin() {
+            const userBadge = document.getElementById('user-badge');
+            userBadge.classList.add('admin-badge');
+            userBadge.innerHTML = '<span>🔧</span><span>ADMIN</span>';
+            const bottomNav = document.getElementById('bottom-nav');
+            if(!document.getElementById('btnAdmin')) {
+                const adminButton = document.createElement('button');
+                adminButton.id = 'btnAdmin';
+                adminButton.className = 'admin-button';
+                adminButton.onclick = openAdminPanel;
+                adminButton.innerHTML = '<span>🔧</span> Admin';
+                const profileButton = document.getElementById('btnProfile');
+                bottomNav.insertBefore(adminButton, profileButton);
+            }
+        }
+
+        function loadUserData() {
+            userOrders = allOrders.filter(order => order.customer_phone === currentUserPhone);
+            if (userOrders.length > 0) {
+                currentUserName = userOrders[0].customer_name;
+                if (!isAdmin) {
+                    document.getElementById('user-name-display').textContent = currentUserName.split(' ')[0];
+                }
+            }
+        }
+
+        function showUserMenu() {
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.style.display = 'flex';
+            modal.style.zIndex = '2500';
+            modal.innerHTML = `
+                <div class="modal-content" style="max-width: 400px;">
+                    <div class="modal-header">
+                        <h2>${isAdmin ? '🔧 Conta Admin' : '👤 Minha Conta'}</h2>
+                        <button class="close-button" onclick="this.closest('.modal').remove()">×</button>
+                    </div>
+                    <div style="text-align: center; padding: 2rem 1rem;">
+                        <div style="width: 100px; height: 100px; background: linear-gradient(135deg, ${isAdmin ? '#d62828, #b91c1c' : '#f8a40e, #d62828'}); border-radius: 50%; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; font-size: 3rem;">
+                            ${isAdmin ? '🔧' : '👤'}
+                        </div>
+                        <h3 style="margin: 0 0 0.5rem 0; color: #000000;">${isAdmin ? 'ADMINISTRADOR' : (currentUserName || 'Usuário')}</h3>
+                        <p style="color: #666; margin: 0;">📱 ${formatPhoneDisplay(currentUserPhone)}</p>
+                        <button onclick="logout()" style="background: linear-gradient(135deg, #ef4444, #dc2626); color: white; border: none; padding: 1rem 2rem; border-radius: 25px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 2rem; transition: all 0.3s ease;">
+                            🚪 Sair da Conta
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        function formatPhoneDisplay(phone) {
+            if (phone.length === 11) { return phone.replace(/^(\d{2})(\d{5})(\d{4}).*/, '($1) $2-$3'); }
+            return phone.replace(/^(\d{2})(\d{4})(\d{4}).*/, '($1) $2-$3');
+        }
+
+        function logout() {
+            confirmLogout();
+        }
+
+        function confirmLogout() {
+            currentUserPhone = '';
+            currentUserName = '';
+            userOrders = [];
+            cart = [];
+            isAdmin = false;
+            saveCart();
+            updateCartDisplay();
+            document.querySelectorAll('.modal').forEach(m => m.remove());
+            const adminBtn = document.getElementById('btnAdmin');
+            if (adminBtn) adminBtn.remove();
+            const userBadge = document.getElementById('user-badge');
+            userBadge.classList.remove('admin-badge');
+            userBadge.innerHTML = '<span>👤</span><span id="user-name-display">Cliente</span>';
+            document.getElementById('login-screen').style.display = 'flex';
+            document.getElementById('login-phone').value = '';
+            document.getElementById('admin-password').value = '';
+            document.getElementById('admin-password-field').style.display = 'none';
+            const loginButton = document.querySelector('.login-button');
+            loginButton.disabled = false;
+            loginButton.textContent = '📱 Entrar';
+            showToast('👋 Você saiu da conta', 'success');
+        }
+
+        function openAdminPanel() {
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.style.display = 'flex';
+            modal.style.zIndex = '2500';
+
+            const totalOrders = allOrders.length;
+            const totalRevenue = allOrders.reduce((sum, order) => sum + parseFloat(order.order_total), 0);
+            const pendingOrders = allOrders.filter(o => o.order_status === 'em_andamento').length;
+            const completedOrders = allOrders.filter(o => o.order_status === 'concluido').length;
+
+            // Link base do domínio atual para orientar a criação dos QR Codes
+            const currentDomainUrl = window.location.origin + window.location.pathname;
+
+            modal.innerHTML = `
+                <div class="modal-content" style="max-width: 850px; max-height: 90%; overflow-y: auto;">
+                    <div class="modal-header">
+                        <h2>🔧 Painel de Gestão Completa</h2>
+                        <button class="close-button" onclick="this.closest('.modal').remove()">×</button>
+                    </div>
+
+                    <div class="admin-tabs">
+                        <button class="admin-tab-btn active" onclick="switchAdminTab(this, 'pane-dashboard')">📊 Dashboard</button>
+                        <button class="admin-tab-btn" onclick="switchAdminTab(this, 'pane-config')">⚙️ Configurações / Banners</button>
+                        <button class="admin-tab-btn" onclick="switchAdminTab(this, 'pane-cardapio')">🍔 Gerenciar Cardápio</button>
+                    </div>
+
+                    <div id="pane-dashboard" class="admin-pane active">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                            <div style="background: linear-gradient(135deg, #f8a40e, #ffb84d); padding: 1rem; border-radius: 15px; text-align: center; color: #000;">
+                                <div style="font-size: 1.5rem;">📊</div>
+                                <div style="font-size: 1.5rem; font-weight: bold;">${totalOrders}</div>
+                                <div style="font-size: 0.8rem;">Total de Pedidos</div>
+                            </div>
+                            <div style="background: linear-gradient(135deg, #22c55e, #16a34a); padding: 1rem; border-radius: 15px; text-align: center; color: white;">
+                                <div style="font-size: 1.5rem;">💰</div>
+                                <div style="font-size: 1.2rem; font-weight: bold;">R$ ${totalRevenue.toFixed(2).replace('.', ',')}</div>
+                                <div style="font-size: 0.8rem;">Total Vendido</div>
+                            </div>
+                            <div style="background: linear-gradient(135deg, #f59e0b, #d97706); padding: 1rem; border-radius: 15px; text-align: center; color: white;">
+                                <div style="font-size: 1.5rem;">🕐</div>
+                                <div style="font-size: 1.5rem; font-weight: bold;">${pendingOrders}</div>
+                                <div style="font-size: 0.8rem;">Em Andamento</div>
+                            </div>
+                            <div style="background: linear-gradient(135deg, #3b82f6, #2563eb); padding: 1rem; border-radius: 15px; text-align: center; color: white;">
+                                <div style="font-size: 1.5rem;">✅</div>
+                                <div style="font-size: 1.5rem; font-weight: bold;">${completedOrders}</div>
+                                <div style="font-size: 0.8rem;">Concluídos</div>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 1.5rem;">
+                            <h3 style="margin: 0 0 1rem 0; font-weight:bold;">📋 Todos os Pedidos</h3>
+                            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                                <button onclick="filterAdminOrders('all')" class="filter-btn active" data-filter="all" style="background: #f8a40e; color: #000; border: none; padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: bold;">Todos (${totalOrders})</button>
+                                <button onclick="filterAdminOrders('em_andamento')" class="filter-btn" data-filter="em_andamento" style="background: #e5e7eb; color: #000; border: none; padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: bold;">Em Andamento (${pendingOrders})</button>
+                                <button onclick="filterAdminOrders('concluido')" class="filter-btn" data-filter="concluido" style="background: #e5e7eb; color: #000; border: none; padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: bold;">Concluídos (${completedOrders})</button>
+                            </div>
+                        </div>
+                        <div id="admin-orders-list">${renderAdminOrders(allOrders)}</div>
+                    </div>
+
+                    <div id="pane-config" class="admin-pane">
+                        <div class="bg-blue-50 border border-blue-200 p-3 rounded-xl mb-4 text-xs text-blue-800">
+                            <strong>📌 ESTRUTURA DOS LINKS PARA SEUS QR CODES:</strong><br>
+                            Para gerar o QR Code de cada mesa no salão do cliente, use o link abaixo mudando apenas o número final:<br>
+                            <code class="bg-white px-1 py-0.5 rounded font-mono select-all">${currentDomainUrl}?mesa=01</code> (Mesa 1)<br>
+                            <code class="bg-white px-1 py-0.5 rounded font-mono select-all">${currentDomainUrl}?mesa=05</code> (Mesa 5)
+                        </div>
+
+                        <h3 class="font-bold text-gray-800 text-sm mb-2 border-b pb-1">⚙️ Customizar Dados da Loja</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div class="form-group"><label>Nome da Lanchonete</label><input type="text" id="cfg-name" value="${config.restaurant_name}"></div>
+                            <div class="form-group"><label>Número WhatsApp (Ex: 5518998165086)</label><input type="text" id="cfg-whasapp" value="${config.whatsapp_number}"></div>
+                            <div class="form-group"><label>Tipo de Chave Pix (Celular, CNPJ, CPF, Aleatória)</label>
+                                <select id="cfg-pix-type" class="w-full p-2 border border-[#f8a40e] rounded-[10px] text-base">
+                                    <option value="Celular" ${config.pix_type==='Celular'?'selected':''}>Celular</option>
+                                    <option value="CNPJ" ${config.pix_type==='CNPJ'?'selected':''}>CNPJ</option>
+                                    <option value="CPF" ${config.pix_type==='CPF'?'selected':''}>CPF</option>
+                                    <option value="E-mail" ${config.pix_type==='E-mail'?'selected':''}>E-mail</option>
+                                    <option value="Chave Aleatória" ${config.pix_type==='Chave Aleatória'?'selected':''}>Chave Aleatória</option>
+                                </select>
+                            </div>
+                            <div class="form-group"><label>Chave PIX</label><input type="text" id="cfg-pix" value="${config.pix_key}"></div>
+                            <div class="form-group"><label>Taxa de Entrega (R$)</label><input type="number" id="cfg-fee" value="${config.delivery_fee}" step="0.01"></div>
+                            <div class="form-group"><label>Pedido Mínimo (R$)</label><input type="number" id="cfg-min" value="${config.min_order}" step="0.01"></div>
+                            <div class="form-group"><label>Cor Principal do Cardápio (HEX)</label><input type="color" id="cfg-color" value="${config.primary_color}" style="height:45px; padding:2px;"></div>
+                            <div class="form-group"><label>Link URL da Imagem de Logomarca (Deixe vazio p/ usar Mascote animado)</label><input type="text" id="cfg-logo-url" value="${config.restaurant_logo_url || ''}" placeholder="https://linkdafoto.com/logo.jpg"></div>
+                        </div>
+                        
+                        <h3 class="font-bold text-gray-800 text-sm mb-2 border-b pb-1">🖼️ Compartimento de Imagens de Banners (Topo)</h3>
+                        <div class="grid grid-cols-1 gap-2 mb-4 text-xs">
+                            <div class="form-group"><label>Link URL do Banner Slide 1</label><input type="text" id="cfg-banner-1" value="${config.banner_img_1 || ''}" placeholder="https://linkdafoto.com/banner1.jpg"></div>
+                            <div class="form-group"><label>Link URL do Banner Slide 2</label><input type="text" id="cfg-banner-2" value="${config.banner_img_2 || ''}" placeholder="https://linkdafoto.com/banner2.jpg"></div>
+                            <div class="form-group"><label>Link URL do Banner Slide 3</label><input type="text" id="cfg-banner-3" value="${config.banner_img_3 || ''}" placeholder="https://linkdafoto.com/banner3.jpg"></div>
+                        </div>
+
+                        <h3 class="font-bold text-gray-800 text-sm mb-2 border-b pb-1">📝 Títulos do Banner Central</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-2">
+                            <div class="form-group"><label>Título de Boas-vindas</label><input type="text" id="cfg-welcome" value="${config.welcome_title}"></div>
+                            <div class="form-group"><label>Subtítulo / Descrição Ano</label><input type="text" id="cfg-subwelcome" value="${config.welcome_subtitle}"></div>
+                        </div>
+                        <div class="form-group"><label>Endereço Completo</label><input type="text" id="cfg-address" value="${config.address}"></div>
+                        <div class="form-group"><label>Horários (Separe por • para quebrar linhas)</label><textarea id="cfg-hours" rows="2">${config.hours}</textarea></div>
+                        <button onclick="saveAdminGeneralConfig()" class="w-100 p-3 text-white font-bold rounded-lg mt-2" style="background:linear-gradient(135deg, #22c55e, #16a34a)">💾 Salvar Configurações e Banners</button>
+                    </div>
+
+                    <div id="pane-cardapio" class="admin-pane">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 style="font-weight:bold; font-size:1.1rem;">🍔 Controle de Produtos</h3>
+                            <button onclick="openFormAddProduct()" class="bg-blue-600 text-white px-3 py-1 text-sm font-bold rounded">+ Adicionar Item</button>
+                        </div>
+                        <div id="form-product-placeholder" class="bg-gray-100 p-4 rounded-xl mb-4 hidden"></div>
+                        <div id="admin-crud-products-list"></div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            document.getElementById('pane-config').scrollIntoView();
+            switchAdminTab(document.querySelector('.admin-tab-btn'), 'pane-dashboard');
+            renderAdminCrudProducts();
+            highlight("btnAdmin");
+        }
+
+        function switchAdminTab(btn, targetPaneId) {
+            document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.admin-pane').forEach(p => p.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById(targetPaneId).classList.add('active');
+        }
+
+        function saveAdminGeneralConfig() {
+            config.restaurant_name = document.getElementById('cfg-name').value;
+            config.whatsapp_number = document.getElementById('cfg-whasapp').value;
+            config.pix_type = document.getElementById('cfg-pix-type').value;
+            config.pix_key = document.getElementById('cfg-pix').value;
+            config.delivery_fee = parseFloat(document.getElementById('cfg-fee').value).toFixed(2);
+            config.min_order = parseFloat(document.getElementById('cfg-min').value).toFixed(2);
+            config.primary_color = document.getElementById('cfg-color').value;
+            config.restaurant_logo_url = document.getElementById('cfg-logo-url').value;
+            
+            config.banner_img_1 = document.getElementById('cfg-banner-1').value;
+            config.banner_img_2 = document.getElementById('cfg-banner-2').value;
+            config.banner_img_3 = document.getElementById('cfg-banner-3').value;
+            
+            config.welcome_title = document.getElementById('cfg-welcome').value;
+            config.welcome_subtitle = document.getElementById('cfg-subwelcome').value;
+            config.address = document.getElementById('cfg-address').value;
+            config.hours = document.getElementById('cfg-hours').value;
+
+            localStorage.setItem('app_config', JSON.stringify(config));
+            applyConfigTheme();
+            renderCategories();
+            showToast('⚙️ Configurações e Banners salvos!', 'success');
+        }
+
+        function renderAdminCrudProducts() {
+            const container = document.getElementById('admin-crud-products-list');
+            container.innerHTML = '';
+            products.forEach(p => {
+                let renderImg = p.image;
+                if(p.image.startsWith('http://') || p.image.startsWith('https://')) {
+                    renderImg = `<img src="${p.image}" style="width:30px; height:30px; object-fit:cover; border-radius:4px;">`;
+                }
+                container.innerHTML += `
+                    <div class="flex justify-between items-center border-b p-2 text-sm bg-white hover:bg-gray-50">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xl flex items-center justify-center">${renderImg}</span>
+                            <div>
+                                <strong>${p.name}</strong> <span class="text-xs text-gray-500">(${categories[p.category] || p.category})</span>
+                                <div class="text-xs text-gray-600">R$ ${p.price.toFixed(2)} - ${p.description.slice(0, 45)}...</div>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="toggleProductActive('${p.id}')" class="text-xs px-2 py-1 rounded font-bold ${p.active ? 'bg-green-100 text-green-700':'bg-red-100 text-red-700'}">${p.active ? 'Ativo':'Oculto'}</button>
+                            <button onclick="editProductInline('${p.id}')" class="text-xs bg-gray-200 text-black px-2 py-1 rounded">✏️</button>
+                            <button onclick="deleteProductInline('${p.id}')" class="text-xs bg-red-600 text-white px-2 py-1 rounded">🗑️</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function toggleProductActive(id) {
+            const p = products.find(prod => prod.id === id);
+            if(p) {
+                p.active = !p.active;
+                localStorage.setItem('app_products', JSON.stringify(products));
+                renderAdminCrudProducts();
+                renderCategories();
+                showToast('Status alterado!', 'success');
+            }
+        }
+
+        function deleteProductInline(id) {
+            if(confirm('Deseja realmente remover este item do cardápio permanentemente?')) {
+                products = products.filter(p => p.id !== id);
+                localStorage.setItem('app_products', JSON.stringify(products));
+                renderAdminCrudProducts();
+                renderCategories();
+                showToast('Produto deletado!', 'success');
+            }
+        }
+
+        function openFormAddProduct() {
+            const formPlace = document.getElementById('form-product-placeholder');
+            formPlace.classList.remove('hidden');
+            formPlace.innerHTML = `
+                <h4 class="font-bold text-sm mb-2 text-blue-800">➕ Novo Produto</h4>
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                    <div class="form-group"><label>Nome</label><input type="text" id="new-p-name"></div>
+                    <div class="form-group"><label>Link Imagem Real (URL) ou Emoji</label><input type="text" id="new-p-img" value="🍔"></div>
+                    <div class="form-group"><label>Preço (R$)</label><input type="number" id="new-p-price" step="0.01"></div>
+                    <div class="form-group"><label>Serve</label><input type="text" id="new-p-serves" value="1 pessoa"></div>
+                    <div class="form-group col-span-2"><label>Categoria</label>
+                        <select id="new-p-cat" class="w-full p-2 border rounded">
+                            ${Object.entries(categories).map(([k,v]) => `<option value="${k}">${v}</option>`).join('')}
+                        </select>
+                    </div>
+                    <div class="form-group col-span-2"><label>Descrição/Ingredientes</label><input type="text" id="new-p-desc"></div>
+                </div>
+                <div class="flex gap-2 mt-2">
+                    <button onclick="saveNewProduct()" class="bg-green-600 text-white px-3 py-1 text-xs font-bold rounded">Salvar</button>
+                    <button onclick="document.getElementById('form-product-placeholder').classList.add('hidden')" class="bg-gray-300 text-black px-3 py-1 text-xs rounded">Cancelar</button>
+                </div>
+            `;
+        }
+
+        function saveNewProduct() {
+            const name = document.getElementById('new-p-name').value;
+            const img = document.getElementById('new-p-img').value;
+            const price = parseFloat(document.getElementById('new-p-price').value || 0);
+            const serves = document.getElementById('new-p-serves').value;
+            const category = document.getElementById('new-p-cat').value;
+            const description = document.getElementById('new-p-desc').value;
+
+            if(!name || price <= 0) {
+                alert('Preencha os dados obrigatórios!');
+                return;
+            }
+
+            const newProd = {
+                id: Date.now().toString().slice(-5),
+                name, description, serves, price, image: img, category, active: true, order: products.length + 1
+            };
+
+            products.push(newProd);
+            localStorage.setItem('app_products', JSON.stringify(products));
+            document.getElementById('form-product-placeholder').classList.add('hidden');
+            renderAdminCrudProducts();
+            renderCategories();
+            showToast('🛒 Novo item cadastrado!', 'success');
+        }
+
+        function editProductInline(id) {
+            const p = products.find(prod => prod.id === id);
+            if(!p) return;
+            const formPlace = document.getElementById('form-product-placeholder');
+            formPlace.classList.remove('hidden');
+            formPlace.innerHTML = `
+                <h4 class="font-bold text-sm mb-2 text-yellow-800">✏️ Editar Item</h4>
+                <div class="grid grid-cols-2 gap-2 text-xs">
+                    <div class="form-group"><label>Nome</label><input type="text" id="edit-p-name" value="${p.name}"></div>
+                    <div class="form-group"><label>Link Imagem Real (URL) ou Emoji</label><input type="text" id="edit-p-img" value="${p.image}"></div>
+                    <div class="form-group"><label>Preço (R$)</label><input type="number" id="edit-p-price" value="${p.price}" step="0.01"></div>
+                    <div class="form-group"><label>Serve</label><input type="text" id="edit-p-serves" value="${p.serves}"></div>
+                    <div class="form-group col-span-2"><label>Categoria</label>
+                        <select id="edit-p-cat" class="w-full p-2 border rounded">
+                            ${Object.entries(categories).map(([k,v]) => `<option value="${k}" ${p.category === k ? 'selected':''}>${v}</option>`).join('')}
+                        </select>
+                    </div>
+                    <div class="form-group col-span-2"><label>Descrição/Ingredientes</label><input type="text" id="edit-p-desc" value="${p.description}"></div>
+                </div>
+                <div class="flex gap-2 mt-2">
+                    <button onclick="saveEditProduct('${p.id}')" class="bg-yellow-600 text-white px-3 py-1 text-xs font-bold rounded">Atualizar</button>
+                    <button onclick="document.getElementById('form-product-placeholder').classList.add('hidden')" class="bg-gray-300 text-black px-3 py-1 text-xs rounded">Cancelar</button>
+                </div>
+            `;
+            formPlace.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function saveEditProduct(id) {
+            const p = products.find(prod => prod.id === id);
+            if(!p) return;
+
+            p.name = document.getElementById('edit-p-name').value;
+            p.image = document.getElementById('edit-p-img').value;
+            p.price = parseFloat(document.getElementById('edit-p-price').value || 0);
+            p.serves = document.getElementById('edit-p-serves').value;
+            p.category = document.getElementById('edit-p-cat').value;
+            p.description = document.getElementById('edit-p-desc').value;
+
+            localStorage.setItem('app_products', JSON.stringify(products));
+            document.getElementById('form-product-placeholder').classList.add('hidden');
+            renderAdminCrudProducts();
+            renderCategories();
+            showToast('Item atualizado com sucesso!', 'success');
+        }
+
+        function renderAdminOrders(orders) {
+            if (orders.length === 0) {
+                return `
+                    <div style="text-align: center; padding: 3rem; color: #666;">
+                        <div style="font-size: 4rem; margin-bottom: 1rem;">📄</div>
+                        <h3 style="color: #000000; margin-bottom: 0.5rem;">Nenhum pedido ainda</h3>
+                        <p>Os pedidos dos clientes aparecerão aqui</p>
+                    </div>
+                `;
+            }
+            return orders.slice().reverse().map(order => `
+                <div class="admin-order-card" data-status="${order.order_status}" style="background: white; border: 2px solid ${order.order_status === 'concluido' ? '#22c55e' : config.primary_color}; border-radius: 15px; padding: 1.5rem; margin-bottom: 1rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 2px solid #f0f0f0;">
+                        <div style="flex: 1;">
+                            <h4 style="margin: 0; color: #d62828; font-size: 1.1rem;">Pedido #${order.order_id}</h4>
+                            <p style="margin: 0.25rem 0 0 0; color: #666; font-size: 0.9rem;">${order.order_date}</p>
+                            <p style="margin: 0.5rem 0 0 0; color: #000; font-weight: bold;">
+                                👤 ${order.customer_name}<br>
+                                📱 ${formatPhoneDisplay(order.customer_phone)}
+                            </p>
+                        </div>
+                        <span style="background: ${order.order_status === 'concluido' ? '#22c55e' : config.primary_color}; color: ${order.order_status === 'concluido' ? 'white' : '#000000'}; padding: 0.5rem 1rem; border-radius: 20px; font-weight: bold; font-size: 0.9rem; white-space: nowrap;">
+                            ${order.order_status === 'concluido' ? '✅ Concluído' : '🕐 Em andamento'}
+                        </span>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <h5 style="margin: 0 0 0.5rem 0; color: #000000;">🛒 Itens:</h5>
+                        ${JSON.parse(order.order_items).map(item => `
+                            <div style="display: flex; justify-content: space-between; padding: 0.25rem 0; color: #666;">
+                                <span>${item.quantity}x ${item.name}</span>
+                                <span>R$ ${(item.price * item.quantity).toFixed(2).replace('.', ',')}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-weight: bold; padding-top: 0.75rem; border-top: 2px solid #f0f0f0; color: #d62828; font-size: 1.1rem; margin-bottom: 1rem;">
+                        <span>Total:</span>
+                        <span>R$ ${order.order_total.toFixed(2).replace('.', ',')}</span>
+                    </div>
+                    <div style="padding: 1rem; background: #f8f9fa; border-radius: 10px; margin-bottom: 1rem;">
+                        <p style="margin: 0.25rem 0; color: #666; font-size: 0.9rem;"><strong>Tipo:</strong> ${order.order_type === 'delivery' ? '🏍️ Delivery' : order.order_type === 'salao' ? '🪑 Atendimento no Salão' : '🏪 Balcão'}</p>
+                        <p style="margin: 0.25rem 0; color: #666; font-size: 0.9rem;"><strong>Pagamento:</strong> ${order.order_payment}</p>
+                    </div>
+                    ${order.order_status === 'em_andamento' ? `
+                        <button onclick="markOrderComplete('${order.order_id}')" style="background: linear-gradient(135deg, #22c55e, #16a34a); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 10px; cursor: pointer; font-weight: bold; width: 100%; transition: all 0.3s ease;">✅ Marcar como Concluído</button>
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+
+        async function markOrderComplete(orderId) {
+            const order = allOrders.find(o => o.order_id === orderId);
+            if (!order) return;
+            order.order_status = 'concluido';
+            localStorage.setItem('all_orders', JSON.stringify(allOrders));
+            filterAdminOrders('all');
+            showToast('✅ Pedido marcado como concluído!', 'success');
+        }
+
+        function filterAdminOrders(status) {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                if (btn.dataset.filter === status) {
+                    btn.classList.add('active');
+                    btn.style.background = config.primary_color;
+                } else {
+                    btn.classList.remove('active');
+                    btn.style.background = '#e5e7eb';
+                }
+            });
+            const ordersToShow = status === 'all' ? allOrders : allOrders.filter(o => o.order_status === status);
+            document.getElementById('admin-orders-list').innerHTML = renderAdminOrders(ordersToShow);
+        }
+
+        // Initialize App
+        async function initializeApp() {
+            syncConfig();
+            renderCategories();
+            updateCartDisplay();
+        }
+
+        // Render categories and products
+        function renderCategories() {
+            const container = document.getElementById('categories-container');
+            container.innerHTML = '';
+            
+            const navContainer = document.getElementById('nav-menu-container');
+            navContainer.innerHTML = '';
+
+            Object.entries(categories).forEach(([categoryId, categoryName]) => {
+                const categoryProducts = products.filter(p => p.category === categoryId && p.active);
+                if (categoryProducts.length === 0) return;
+
+                navContainer.innerHTML += `<a href="#${categoryId}" onclick="setActiveCategory(this)">${categoryName.split(' ')[0]} ${categoryName.split(' ').slice(1).join(' ')}</a>`;
+
+                const categorySection = document.createElement('section');
+                categorySection.className = 'category';
+                categorySection.id = categoryId;
+                categorySection.innerHTML = `
+                    <h2 class="category-title" style="background: linear-gradient(135deg, ${config.primary_color}, #fff);">${categoryName}</h2>
+                    <div class="products-grid">
+                        ${categoryProducts.sort((a, b) => a.order - b.order).map(product => {
+                            let itemVisual = product.image;
+                            if (product.image.startsWith('http://') || product.image.startsWith('https://')) {
+                                itemVisual = `<img src="${product.image.trim()}" alt="${product.name}">`;
+                            }
+                            return `
+                            <div class="product-card" style="border-color:${config.primary_color}">
+                                <div class="product-image" style="background-color:${config.primary_color}">${itemVisual}</div>
+                                <div class="product-info">
+                                    <h3>${product.name}</h3>
+                                    <p>${product.description}</p>
+                                </div>
+                                <div class="product-serves">${product.serves}</div>
+                                <div class="product-price">R$ ${product.price.toFixed(2).replace('.', ',')}</div>
+                                <button class="add-button" style="background: linear-gradient(135deg, ${config.primary_color}, #000)" onclick="addToCart('${product.id}')">+ Adicionar</button>
+                            </div>
+                        `}).join('')}
+                    </div>
+                `;
+                container.appendChild(categorySection);
+            });
+            applyConfigTheme();
+        }
+
+        // Cart functions
+        function addToCart(productId) {
+            let product = products.find(p => p.id === productId);
+            if(!product) product = promosList.find(p => p.id === productId);
+            if (!product) return;
+
+            const button = event.target;
+            const originalText = button.textContent;
+            if(button && button.tagName === 'BUTTON') {
+                button.textContent = '✅ Adicionado!';
+                button.style.background = 'linear-gradient(135deg, #22c55e, #16a34a)';
+                button.disabled = true;
+            }
+
+            const existingItem = cart.find(item => item.id === productId);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: productId,
+                    name: product.name,
+                    price: product.price,
+                    quantity: 1
+                });
+            }
+
+            saveCart();
+            updateCartDisplay();
+            showToast(`${product.name} adicionado ao carrinho!`, 'success');
+
+            setTimeout(() => {
+                if(button && button.tagName === 'BUTTON') {
+                    button.textContent = originalText;
+                    button.style.background = '';
+                    button.disabled = false;
+                }
+            }, 1500);
+
+            const cartCount = document.getElementById('cart-count');
+            cartCount.style.transform = 'scale(1.3)';
+            cartCount.style.background = '#22c55e';
+            setTimeout(() => {
+                cartCount.style.transform = 'scale(1)';
+                cartCount.style.background = '#d62828';
+            }, 300);
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            saveCart();
+            updateCartDisplay();
+            renderCartItems();
+        }
+
+        function updateQuantity(productId, change) {
+            const item = cart.find(item => item.id === productId);
+            if (!item) return;
+            item.quantity += change;
+            if (item.quantity <= 0) {
+                removeFromCart(productId);
+                return;
+            }
+            saveCart();
+            updateCartDisplay();
+            renderCartItems();
+        }
+
+function saveCart() {
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
+
+        function updateCartDisplay() {
+            const cartCount = document.getElementById('cart-count');
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCount.textContent = totalItems;
+            cartCount.style.display = totalItems > 0 ? 'flex' : 'none';
+        }
+
+        function renderCartItems() {
+            const container = document.getElementById('cart-items');
+            if (cart.length === 0) {
+                container.innerHTML = '<div class="empty-state text-center p-4 text-gray-500">Seu carrinho está vazio</div>';
+                return;
+            }
+            container.innerHTML = cart.map(item => `
+                <div class="cart-item">
+                    <div class="cart-item-info">
+                        <h4>${item.name}</h4>
+                        <p>R$ ${item.price.toFixed(2).replace('.', ',')} cada</p>
+                    </div>
+                    <div class="cart-item-controls">
+                        <button class="qty-button" style="background:${config.primary_color}" onclick="updateQuantity('${item.id}', -1)">-</button>
+                        <span>${item.quantity}</span>
+                        <button class="qty-button" style="background:${config.primary_color}" onclick="updateQuantity('${item.id}', 1)">+</button>
+                        <button class="qty-button" onclick="removeFromCart('${item.id}')" style="background: #d62828; color: white; margin-left: 0.5rem;">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
+            updateCartTotal();
+        }
+
+        function updateCartTotal() {
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const deliveryType = document.querySelector('input[name="delivery-type"]:checked');
+            
+            // Taxa só cobra se for delivery tradicional
+            const isDelivery = deliveryType && deliveryType.value === 'delivery';
+            const deliveryFee = isDelivery ? parseFloat(config.delivery_fee) : 0;
+            const total = subtotal + deliveryFee;
+
+            const paymentMethod = document.querySelector('input[name="payment"]:checked');
+            const changeAmount = document.getElementById('change-amount').value;
+            let changeCalculation = '';
+            
+            if (paymentMethod && paymentMethod.value === 'dinheiro' && changeAmount) {
+                const changeValue = parseFloat(changeAmount);
+                if (changeValue > total) {
+                    const changeBack = changeValue - total;
+                    changeCalculation = `
+                        <div style="margin-top: 0.5rem; padding: 0.5rem; background: rgba(34, 197, 94, 0.1); border-radius: 8px; border-left: 4px solid #22c55e;">
+                            <div><strong>💰 Cálculo do Troco:</strong></div>
+                            <div>Valor pago: R$ ${changeValue.toFixed(2).replace('.', ',')}</div>
+                            <div>Total do pedido: R$ ${total.toFixed(2).replace('.', ',')}</div>
+                            <div style="color: #000000; font-weight: bold;">Troco: R$ ${changeBack.toFixed(2).replace('.', ',')}</div>
+                        </div>
+                    `;
+                } else if (changeValue < total) {
+                    changeCalculation = `
+                        <div style="margin-top: 0.5rem; padding: 0.5rem; background: rgba(239, 68, 68, 0.1); border-radius: 8px; border-left: 4px solid #ef4444;">
+                            <div style="color: #ef4444; font-weight: bold;">⚠️ Valor insuficiente!</div>
+                            <div>Valor informado: R$ ${changeValue.toFixed(2).replace('.', ',')}</div>
+                            <div>Total necessário: R$ ${total.toFixed(2).replace('.', ',')}</div>
+                            <div>Faltam: R$ ${(total - changeValue).toFixed(2).replace('.', ',')}</div>
+                        </div>
+                    `;
+                }
+            }
+
+            const totalElement = document.getElementById('cart-total');
+            totalElement.innerHTML = `
+                <div>Subtotal: R$ ${subtotal.toFixed(2).replace('.', ',')}</div>
+                <div>Taxa de entrega: R$ ${deliveryFee.toFixed(2).replace('.', ',')} ${deliveryType && deliveryType.value==='salao'?'(Mesa no Salão)':(isDelivery ? '' : '(Retirada no balcão)')}</div>
+                <div><strong>Total: R$ ${total.toFixed(2).replace('.', ',')}</strong></div>
+                ${changeCalculation}
+            `;
+        }
+
+        // Modal functions
+        function openCart() {
+            document.getElementById('cart-modal').style.display = 'flex';
+            renderCartItems();
+        }
+
+        function closeCart() {
+            document.getElementById('cart-modal').style.display = 'none';
+            document.getElementById('checkout-form').style.display = 'none';
+            document.getElementById('checkout-btn').style.display = 'block';
+        }
+
+        function backToCartItemsReview() {
+            document.getElementById('checkout-form').style.display = 'none';
+            document.getElementById('checkout-btn').style.display = 'block';
+        }
+
+        function showCheckout() {
+            if (cart.length === 0) {
+                showToast('Adicione itens ao carrinho primeiro!', 'error');
+                return;
+            }
+            document.getElementById('checkout-form').style.display = 'block';
+            document.getElementById('checkout-btn').style.display = 'none';
+            document.getElementById('customer-phone').value = formatPhoneDisplay(currentUserPhone);
+            if (currentUserName) {
+                document.getElementById('customer-name').value = currentUserName;
+            }
+            
+            // Forçar ativação se houver mesa do QR code escaneada previamente
+            if (numeroMesaDetectada) {
+                selectDeliveryType('salao');
+                document.getElementById('customer-table-number').value = numeroMesaDetectada;
+            }
+            
+            setTimeout(() => {
+                const checkoutForm = document.getElementById('checkout-form');
+                checkoutForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+        }
+
+        // Bottom Nav Functions
+        function goHome() {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+            highlight("btnHome");
+        }
+
+        function openSearch() {
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.style.display = 'flex';
+            modal.style.zIndex = '2500';
+            modal.innerHTML = `
+                <div class="modal-content" style="max-width: 600px;">
+                    <div class="modal-header">
+                        <h2>🔍 Buscar Produtos</h2>
+                        <button class="close-button" onclick="this.closest('.modal').remove()">×</button>
+                    </div>
+                    <div style="margin-bottom: 1.5rem;">
+                        <input type="text" id="search-input" placeholder="Digite o nome do produto..." style="width: 100%; padding: 1rem; border: 2px solid ${config.primary_color}; border-radius: 10px; font-size: 1rem;" oninput="performSearch(this.value)">
+                    </div>
+                    <div id="search-results" style="max-height: 400px; overflow-y: auto;">
+                        <div style="text-align: center; color: #666; padding: 2rem;">Digite algo para buscar...</div>
+                    </div>
+                    <button onclick="this.closest('.modal').remove()" class="w-full mt-2 p-2 bg-gray-200 font-bold rounded-lg"><i class="fa-solid fa-arrow-left"></i> Voltar ao Menu</button>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            document.getElementById('search-input').focus();
+            highlight("btnSearch");
+        }
+
+        function performSearch(query) {
+            const resultsContainer = document.getElementById('search-results');
+            if (!query.trim()) {
+                resultsContainer.innerHTML = `<div style="text-align: center; color: #666; padding: 2rem;">Digite algo para buscar...</div>`;
+                return;
+            }
+            const searchTerm = query.toLowerCase();
+            const results = products.filter(p => p.active && (p.name.toLowerCase().includes(searchTerm) || p.description.toLowerCase().includes(searchTerm)));
+            if (results.length === 0) {
+                resultsContainer.innerHTML = `
+                    <div style="text-align: center; color: #666; padding: 2rem;">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">😕</div>
+                        <p>Nenhum produto encontrado para "${query}"</p>
+                    </div>
+                `;
+                return;
+            }
+            resultsContainer.innerHTML = results.map(product => {
+                let sVisual = product.image;
+                if(product.image.startsWith('http://') || product.image.startsWith('https://')) {
+                    sVisual = `<img src="${product.image}" style="width:100%; height:100%; object-fit:cover;">`;
+                }
+                return `
+                <div class="product-card" style="margin-bottom: 1rem; border-color:${config.primary_color}">
+                    <div class="product-image" style="background-color:${config.primary_color}">${sVisual}</div>
+                    <div class="product-info">
+                        <h3>${product.name}</h3>
+                        <p>${product.description}</p>
+                    </div>
+                    <div class="product-serves">${product.serves}</div>
+                    <div class="product-price">R$ ${product.price.toFixed(2).replace('.', ',')}</div>
+                    <button class="add-button" style="background: linear-gradient(135deg, ${config.primary_color}, #000)" onclick="addToCart('${product.id}'); showToast('${product.name} adicionado!', 'success');">+ Adicionar</button>
+                </div>
+            `}).join('');
+        }
+
+        function openCartNav() {
+            openCart();
+            highlight("btnCart");
+        }
+
+        function openOrders() {
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            modal.style.display = 'flex';
+            modal.style.zIndex = '2500';
+            const ordersHTML = userOrders.length === 0 ? `
+                <div style="text-align: center; padding: 3rem; color: #666;">
+                    <div style="font-size: 4rem; margin-bottom: 1rem;">📄</div>
+                    <h3 style="color: #000000; margin-bottom: 0.5rem;">Nenhum pedido ainda</h3>
+                    <p>Seus pedidos aparecerão aqui após finalizar uma compra</p>
+                </div>
+            ` : userOrders.slice().reverse().map(order => `
+                <div style="background: white; border: 2px solid ${config.primary_color}; border-radius: 15px; padding: 1.5rem; margin-bottom: 1rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 2px solid #f0f0f0;">
+                        <div>
+                            <h4 style="margin: 0; color: #d62828;">Pedido #${order.order_id}</h4>
+                            <p style="margin: 0.25rem 0 0 0; color: #666; font-size: 0.9rem;">${order.order_date}</p>
+                        </div>
+                        <span style="background: ${order.order_status === 'concluido' ? '#22c55e' : config.primary_color}; color: ${order.order_status === 'concluido' ? 'white' : '#000000'}; padding: 0.5rem 1rem; border-radius: 20px; font-weight: bold; font-size: 0.9rem;">
+                            ${order.order_status === 'concluido' ? '✅ Concluído' : '🕐 Em andamento'}
+                        </span>
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <h5 style="margin: 0 0 0.5rem 0; color: #000000;">Itens:</h5>
+                        ${JSON.parse(order.order_items).map(item => `
+                            <div style="display: flex; justify-content: space-between; padding: 0.25rem 0; color: #666;">
+                                <span>${item.quantity}x ${item.name}</span>
+                                <span>R$ ${(item.price * item.quantity).toFixed(2).replace('.', ',')}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-weight: bold; padding-top: 0.75rem; border-top: 2px solid #f0f0f0; color: #d62828; font-size: 1.1rem;">
+                        <span>Total:</span>
+                        <span>R$ ${order.order_total.toFixed(2).replace('.', ',')}</span>
+                    </div>
+                </div>
+            `).join('');
+            
+            modal.innerHTML = `
+                <div class="modal-content" style="max-width: 600px; max-height: 90%; overflow-y: auto;">
+                    <div class="modal-header">
+                        <h2>📄 Meus Pedidos</h2>
+                        <button class="close-button" onclick="this.closest('.modal').remove()">×</button>
+                    </div>
+                    <div style="margin-bottom: 1.5rem; padding: 1rem; background: linear-gradient(135deg, #fef3c7, #fbbf24); border-radius: 10px; text-align: center;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🔒</div>
+                        <strong style="color: #92400e;">Privacidade Total</strong><br>
+                        <span style="color: #92400e; font-size: 0.9rem;">Você vê apenas seus pedidos</span>
+                    </div>
+                    <div>${ordersHTML}</div>
+                    <button onclick="this.closest('.modal').remove()" class="w-full mt-2 p-2 bg-gray-200 font-bold rounded-lg"><i class="fa-solid fa-arrow-left"></i> Voltar ao Menu</button>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            highlight("btnOrders");
+        }
+
+        function openProfile() {
+            showUserMenu();
+            highlight("btnProfile");
+        }
+
+        function highlight(id) {
+            document.querySelectorAll(".bottom-nav button").forEach(b => b.classList.remove("active"));
+            const btn = document.getElementById(id);
+            if (btn) btn.classList.add("active");
+        }
+
+        // Address lookup functions
+        async function searchCEP() {
+            const cepInput = document.getElementById('customer-cep');
+            const cepStatus = document.getElementById('cep-status');
+            const cep = cepInput.value.replace(/\D/g, '');
+            if (cep.length !== 8) {
+                cepStatus.style.color = '#ef4444';
+                cepStatus.textContent = '⚠️ Por favor, digite um CEP válido com 8 dígitos';
+                return;
+            }
+            cepStatus.style.color = config.primary_color;
+            cepStatus.textContent = '🔍 Buscando endereço...';
+            document.getElementById('customer-street').value = '';
+            document.getElementById('customer-neighborhood').value = '';
+            document.getElementById('customer-city').value = '';
+
+            try {
+                const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+                const data = await response.json();
+                if (data.erro) {
+                    cepStatus.style.color = '#ef4444';
+                    cepStatus.textContent = '❌ CEP não encontrado. Verifique e tente novamente.';
+                    showToast('CEP não encontrado', 'error');
+                    return;
+                }
+                document.getElementById('customer-street').value = data.logradouro || '';
+                document.getElementById('customer-neighborhood').value = data.bairro || '';
+                document.getElementById('customer-city').value = data.localidade || '';
+                cepInput.value = cep.replace(/^(\d{5})(\d{3})$/, '$1-$2');
+                cepStatus.style.color = '#22c55e';
+                cepStatus.textContent = '✅ Endereço encontrado! Agora preencha o número e ponto de referência.';
+                showToast('Endereço encontrado com sucesso!', 'success');
+                setTimeout(() => {
+                    const numberField = document.getElementById('customer-number');
+                    numberField.focus();
+                    numberField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 300);
+                updateMapLink();
+            } catch (error) {
+                cepStatus.style.color = '#ef4444';
+                cepStatus.textContent = '❌ Erro ao buscar CEP. Verifique sua conexão e tente novamente.';
+                showToast('Erro ao buscar CEP', 'error');
+            }
+        }
+
+        function formatCEP(input) {
+            let value = input.value.replace(/\D/g, '');
+            if (value.length > 8) value = value.slice(0, 8);
+            if (value.length > 5) { value = value.replace(/^(\d{5})(\d{0,3})/, '$1-$2'); }
+            input.value = value;
+        }
+
+        function handleCEPKeyPress(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                searchCEP();
+            }
+        }
+
+        function updateMapLink() {
+            const street = document.getElementById('customer-street').value;
+            const number = document.getElementById('customer-number').value;
+            const neighborhood = document.getElementById('customer-neighborhood').value;
+            const city = document.getElementById('customer-city').value;
+            if (street && number && neighborhood && city) {
+                const address = `${street}, ${number}, ${neighborhood}, ${city}, SP, Brasil`;
+                const mapUrl = `https://maps.google.com/?q=${encodeURIComponent(address)}`;
+                document.getElementById('map-link').innerHTML = `<a href="${mapUrl}" target="_blank" rel="noopener noreferrer" style="color: #0369a1; text-decoration: underline;">📍 Clique aqui para abrir no Google Maps</a>`;
+            }
+        }
+
+        // Delivery and payment functions
+        function selectDeliveryType(type) {
+            document.querySelectorAll('.delivery-option').forEach(el => el.classList.remove('selected'));
+            
+            // Correção: Encontrar o elemento correto se clicado via script
+            const optionElement = document.getElementById(`delivery-${type}`).closest('.delivery-option');
+            if(optionElement) optionElement.classList.add('selected');
+            
+            document.getElementById(`delivery-${type}`).checked = true;
+            
+            const addressSection = document.getElementById('delivery-address-section');
+            const salaoSection = document.getElementById('salao-table-section');
+            const addressInputs = addressSection.querySelectorAll('input');
+            
+            if (type === 'delivery') {
+                addressSection.style.display = 'block';
+                salaoSection.style.display = 'none';
+                document.getElementById('customer-table-number').required = false;
+                addressInputs.forEach(input => {
+                    if (['customer-cep', 'customer-street', 'customer-number', 'customer-neighborhood', 'customer-city'].includes(input.id)) { input.required = true; }
+                });
+            } else if (type === 'salao') {
+                addressSection.style.display = 'none';
+                salaoSection.style.display = 'block';
+                document.getElementById('customer-table-number').required = true;
+                addressInputs.forEach(input => { input.required = false; input.value = ''; });
+            } else {
+                addressSection.style.display = 'none';
+                salaoSection.style.display = 'none';
+                document.getElementById('customer-table-number').required = false;
+                addressInputs.forEach(input => { input.required = false; input.value = ''; });
+            }
+            updateCartTotal();
+        }
+
+        function selectPayment(method) {
+            document.querySelectorAll('.payment-method').forEach(el => el.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+            document.getElementById(`payment-${method === 'dinheiro' ? 'cash' : method === 'cartao' ? 'card' : 'pix'}`).checked = true;
+            document.getElementById('change-group').style.display = method === 'dinheiro' ? 'block' : 'none';
+            document.getElementById('pix-info').style.display = method === 'pix' ? 'block' : 'none';
+        }
+
+        function copyPixKey() {
+            const pixKey = document.getElementById('pix-key-display').textContent;
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(pixKey).then(() => {
+                    showToast('Chave PIX copiada!', 'success');
+                }).catch(() => { fallbackCopyTextToClipboard(pixKey); });
+            } else { fallbackCopyTextToClipboard(pixKey); }
+        }
+
+        function fallbackCopyTextToClipboard(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";
+            textArea.style.left = "-999999px";
+            textArea.style.top = "-999999px";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                showToast('Chave PIX copiada!', 'success');
+            } catch (err) { showToast('Não foi possível copiar. Chave PIX: ' + text, 'error'); }
+            document.body.removeChild(textArea);
+        }
+
+        // WhatsApp integration
+        async function sendToWhatsApp() {
+            const deliveryType = document.querySelector('input[name="delivery-type"]:checked');
+            if (!deliveryType) {
+                showToast('Selecione o tipo de pedido (Balcão, Salão ou Delivery)', 'error');
+                return;
+            }
+            let requiredFields = ['customer-name'];
+            if (deliveryType.value === 'delivery') {
+                requiredFields = requiredFields.concat(['customer-cep', 'customer-street', 'customer-number', 'customer-neighborhood', 'customer-city', 'customer-reference']);
+            } else if (deliveryType.value === 'salao') {
+                requiredFields.push('customer-table-number');
+            }
+
+            for (const field of requiredFields) {
+                if (!document.getElementById(field).value.trim()) {
+                    showToast('Por favor, preencha todos os campos obrigatórios', 'error');
+                    return;
+                }
+            }
+            const selectedPayment = document.querySelector('input[name="payment"]:checked');
+            if (!selectedPayment) {
+                showToast('Selecione uma forma de pagamento', 'error');
+                return;
+            }
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            if (subtotal < parseFloat(config.min_order)) {
+                showToast(`Pedido mínimo de R$ ${parseFloat(config.min_order).toFixed(2)}`, 'error');
+                return;
+            }
+            const isDelivery = deliveryType.value === 'delivery';
+            const deliveryFee = isDelivery ? parseFloat(config.delivery_fee) : 0;
+            const total = subtotal + deliveryFee;
+
+            const changeAmount = document.getElementById('change-amount').value;
+            if (selectedPayment.value === 'dinheiro' && changeAmount) {
+                const changeValue = parseFloat(changeAmount);
+                if (changeValue < total) {
+                    showToast(`Valor insuficiente! Você precisa pagar pelo menos R$ ${total.toFixed(2).replace('.', ',')}`, 'error');
+                    return;
+                }
+            }
+
+            const orderData = {
+                customer_phone: currentUserPhone,
+                customer_name: document.getElementById('customer-name').value,
+                customer_cep: document.getElementById('customer-cep').value || '',
+                customer_street: document.getElementById('customer-street').value || '',
+                customer_number: document.getElementById('customer-number').value || '',
+                customer_complement: document.getElementById('customer-complement').value || '',
+                customer_neighborhood: document.getElementById('customer-neighborhood').value || '',
+                customer_city: document.getElementById('customer-city').value || '',
+                order_id: Date.now().toString().slice(-6),
+                order_date: new Date().toLocaleString('pt-BR'),
+                order_items: JSON.stringify(cart),
+                order_total: total,
+                order_type: deliveryType.value,
+                order_payment: selectedPayment.value === 'dinheiro' ? '💸 Dinheiro' : selectedPayment.value === 'cartao' ? '💳 Cartão' : `🔑 PIX (${config.pix_type})`,
+                order_status: 'em_andamento'
+            };
+
+            if (!currentUserName) {
+                currentUserName = orderData.customer_name;
+                if (!isAdmin) { document.getElementById('user-name-display').textContent = currentUserName.split(' ')[0]; }
+            }
+            
+            allOrders.push(orderData);
+            localStorage.setItem('all_orders', JSON.stringify(allOrders));
+            loadUserData();
+
+            sendOrderToWhatsApp(orderData, total, subtotal, deliveryFee, deliveryType.value, selectedPayment, changeAmount);
+        }
+
+        function sendOrderToWhatsApp(orderData, total, subtotal, deliveryFee, orderType, selectedPayment, changeAmount) {
+            let message = `🍔 *PEDIDO - ${config.restaurant_name}*\n\n`;
+            message += `👤 *Cliente:* ${orderData.customer_name}\n`;
+            message += `📱 *Telefone:* ${formatPhoneDisplay(currentUserPhone)}\n\n`;
+            
+            if (orderType === 'delivery') {
+                message += `🏍️ *DELIVERY - Endereço de Entrega:*\n`;
+                message += `${orderData.customer_street}, ${orderData.customer_number}\n`;
+                if (orderData.customer_complement) { message += `${orderData.customer_complement}\n`; }
+                message += `${orderData.customer_neighborhood} - ${orderData.customer_city}\n`;
+                if (document.getElementById('customer-reference').value) { message += `📍 *Referência:* ${document.getElementById('customer-reference').value}\n`; }
+                const address = `${orderData.customer_street}, ${orderData.customer_number}, ${orderData.customer_neighborhood}, ${orderData.customer_city}, SP, Brasil`;
+                message += `🗺️ *LINK DO MAPA:* https://maps.google.com/?q=${encodeURIComponent(address)}\n`;
+            } else if (orderType === 'salao') {
+                const numMesa = document.getElementById('customer-table-number').value;
+                message += `🪑 *ATENDIMENTO NO SALÃO - MESA ${numMesa}*\n`;
+                message += `Consumo local direto na Mesa ${numMesa}\n`;
+            } else { 
+                message += `🏪 *RETIRADA NO BALCÃO*\n`; 
+            }
+            
+            message += `\n🛒 *ITENS DO PEDIDO:*\n`;
+            cart.forEach(item => { message += `• ${item.quantity}x ${item.name} - R$ ${(item.price * item.quantity).toFixed(2).replace('.', ',')}\n`; });
+            
+            message += `\n💰 *VALORES:*\n`;
+            message += `Subtotal: R$ ${subtotal.toFixed(2).replace('.', ',')}\n`;
+            message += `Taxa de entrega: R$ ${deliveryFee.toFixed(2).replace('.', ',')} ${orderType==='delivery' ? '' : (orderType==='salao'?'(Mesa Salão)':'(Retirada Balcão)')}\n`;
+            message += `*Total: R$ ${total.toFixed(2).replace('.', ',')}*\n\n`;
+            
+            message += `💳 *Pagamento:* `;
+            if (selectedPayment.value === 'dinheiro') {
+                message += `Dinheiro`;
+                if (changeAmount) {
+                    const changeValue = parseFloat(changeAmount);
+                    const changeBack = changeValue - total;
+                    message += `\n💰 *Detalhes do Pagamento:*\n`;
+                    message += `• Valor que o cliente vai pagar: R$ ${changeValue.toFixed(2).replace('.', ',')}\n`;
+                    message += `• Total do pedido: R$ ${total.toFixed(2).replace('.', ',')}\n`;
+                    if (changeBack > 0) { message += `• *TROCO: R$ ${changeBack.toFixed(2).replace('.', ',')}*\n`; }
+                    else if (changeBack === 0) { message += `• *SEM TROCO (valor exato)*\n`; }
+                }
+            } else if (selectedPayment.value === 'cartao') { message += `Cartão (maquininha)`; }
+            else { message += `PIX (${config.pix_type})`; }
+            
+            const notes = document.getElementById('order-notes').value;
+            if (notes) { message += `\n\n📝 *Observações:* ${notes}`; }
+
+            const whatsappUrl = `https://wa.me/${config.whatsapp_number}?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+            showToast('📱 Abrindo WhatsApp...', 'success');
+            
+            setTimeout(() => {
+                cart = [];
+                saveCart();
+                updateCartDisplay();
+                closeCart();
+                showToast('✅ Pedido enviado com sucesso! Aguarde a confirmação.', 'success');
+            }, 2000);
+        }
+
+        function setActiveCategory(clickedLink) {
+            document.querySelectorAll('.nav-menu a').forEach(link => { link.classList.remove('active'); link.style.backgroundColor = '#000000'; link.style.color = '#ffffff'; });
+            clickedLink.classList.add('active');
+            clickedLink.style.backgroundColor = config.primary_color;
+            clickedLink.style.color = '#000000';
+        }
+
+        function setupCategoryObserver() {
+            const categoriesElements = document.querySelectorAll('.category');
+            const navLinks = document.querySelectorAll('.nav-menu a');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const categoryId = entry.target.id;
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            link.style.backgroundColor = '#000000';
+                            link.style.color = '#ffffff';
+                            if (link.getAttribute('href') === `#${categoryId}`) {
+                                link.classList.add('active');
+                                link.style.backgroundColor = config.primary_color;
+                                link.style.color = '#000000';
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: '-150px 0px -50% 0px', threshold: 0.1 });
+            categoriesElements.forEach(category => { observer.observe(category); });
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type} show`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => document.body.removeChild(toast), 300);
+            }, 3000);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeApp();
+            setTimeout(setupCategoryObserver, 1000);
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) { target.scrollIntoView({ behavior: 'smooth' }); }
+            });
+        });
+  </script>
+ </body>
+</html>
